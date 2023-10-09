@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 16:01:30 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/09 16:42:39 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/09 17:03:10 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,11 +200,40 @@ COMMANDS parse(std::string command_message) {
 		command = OPER;
 	else if (command_part == "SQUIT")
 		command = SQUIT;
-	else if (command_part == "ERROR")
-		command = ERROR;
 	else
 		command = UNKNOWN;
 	return command;
+}
+
+int	send_user_message(std::pair<int, std::pair<std::string, User> > user_entry, std::string message) {
+	struct pollfd pfd = {user_entry.first, POLLOUT, 0 };
+	int poll_result = poll(&pfd, 1, -1);
+	if (poll_result < 0) {
+		std::cerr << "Error in poll(): " << strerror(errno) << std::endl;
+		return (1);
+	}
+	else if (poll_result == 0) {
+		std::cerr << "Timeout in poll()" << std::endl;
+		return (1);
+	}
+	else if (pfd.revents & POLLOUT) {
+		ssize_t bytes_sent = send(user_entry.first, message.c_str(), message.length(), 0);
+		if (bytes_sent < 0) {
+			std::cerr << "Error sending message: " << strerror(errno) << std::endl;
+			return (1);
+		}
+		else if (bytes_sent != message.length()) {
+			std::cerr << "Incomplete message sent" << std::endl;
+			return (1);
+		}
+		else {
+			return (0);
+		}
+	}
+	else {
+		std::cerr << "Unknown error in poll()" << std::endl;
+		return (1);
+	}
 }
 
 int command_executing(std::pair<int, std::pair<std::string, User> > user_entry) {
@@ -215,7 +244,8 @@ int command_executing(std::pair<int, std::pair<std::string, User> > user_entry) 
 		{
 			// check password
 			// if correct
-			user_entry.second.second.set_verified(true);
+			send_user_message(user_entry, "Password accepted\r\n");
+			user_entry.second.second.set_verified(true); // not a pointer so outside isnt changed
 			// else
 			// send wrong password message
 			return (1);
@@ -357,7 +387,6 @@ int	Server::handle_client_data(std::vector<pollfd> &pollfds, int clientSocketFD,
 		//if (std::string(buffer, bytesRead).find("\r\n") != std::string::npos) // irssi
 		if (std::string(buffer, bytesRead).find("\n") != std::string::npos) // netcat
 		{
-			this->_users.find(pollfds[i].fd)->second.second.set_verified(true);
 			command_executing(*this->_users.find(pollfds[i].fd));
 			std::cout << "[Server]" << this->_users.find(pollfds[i].fd)->second.second.get_user_name() << ": " << this->_users.find(pollfds[i].fd)->second.first << std::endl;
 			this->_users.find(pollfds[i].fd)->second.first = "";
