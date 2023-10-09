@@ -1,20 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   User.cpp                                           :+:      :+:    :+:   */
+/*   command.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/08 16:41:13 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/09 10:16:04 by jkollner         ###   ########.fr       */
+/*   Created: 2023/10/09 13:38:55 by jkollner          #+#    #+#             */
+/*   Updated: 2023/10/09 13:41:57 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "iostream"
+#include "util.h"
 #include "User.hpp"
 
-User::User(int socketFD) {
-	this->_socketFD = socketFD;
-	this->_verified = false;
-	this->_userName = std::string("User") + std::to_string(socketFD);
-	std::cout << "Constructed " << this->_userName << "(" << this->_socketFD << ")" << std::endl;
-}
+class Command {
+
+	public:
+		int	Command_Handle(std::pair<int, std::pair<std::string, User> >);
+};
