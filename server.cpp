@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 16:01:30 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/09 15:40:08 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/09 16:42:39 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,9 @@ COMMANDS parse(std::string command_message) {
 		return (command);
 
 	std::string command_part = command_message.substr(1, command_message.find(' '));
-	std::transform(command_part.begin(), command_part.end(), command_part.begin(), ::toupper);
+	command_part = command_part.substr(0, command_part.find('\n'));
+	//std::transform(command_part.begin(), command_part.end(), command_part.begin(), ::toupper);
+
 
 	if (command_part == "JOIN")
 		command = JOIN;
@@ -226,75 +228,99 @@ int command_executing(std::pair<int, std::pair<std::string, User> > user_entry) 
 	}
 	switch (command) {
 		case JOIN:
+			std::cout << "Handling JOIN command" << std::endl;
 			// Handle JOIN command
 			break;
 		case NICK:
+			std::cout << "Handling NICK command" << std::endl;
 			// Handle NICK command
 			break;
 		case USER:
+			std::cout << "Handling USER command" << std::endl;
 			// Handle USER command
 			break;
 		case PASS:
+			std::cout << "Handling PASS command" << std::endl;
 			// Handle PASS command
 			break;
 		case CAP:
+			std::cout << "Handling CAP command" << std::endl;
 			// Handle CAP command
 			break;
 		case PING:
+			std::cout << "Handling PING command" << std::endl;
 			// Handle PING command
 			break;
 		case PONG:
+			std::cout << "Handling PONG command" << std::endl;
 			// Handle PONG command
 			break;
 		case PRIVMSG:
+			std::cout << "Handling PRIVMSG command" << std::endl;
 			// Handle PRIVMSG command
 			break;
 		case NOTICE:
+			std::cout << "Handling NOTICE command" << std::endl;
 			// Handle NOTICE command
 			break;
 		case QUIT:
+			std::cout << "Handling QUIT command" << std::endl;
 			// Handle QUIT command
 			break;
 		case PART:
+			std::cout << "Handling PART command" << std::endl;
 			// Handle PART command
 			break;
 		case TOPIC:
+			std::cout << "Handling TOPIC command" << std::endl;
 			// Handle TOPIC command
 			break;
 		case MODE:
+			std::cout << "Handling MODE command" << std::endl;
 			// Handle MODE command
 			break;
 		case WHO:
+			std::cout << "Handling WHO command" << std::endl;
 			// Handle WHO command
 			break;
 		case WHOIS:
+			std::cout << "Handling WHOIS command" << std::endl;
 			// Handle WHOIS command
 			break;
 		case LIST:
+			std::cout << "Handling LIST command" << std::endl;
 			// Handle LIST command
 			break;
 		case INVITE:
+			std::cout << "Handling INVITE command" << std::endl;
 			// Handle INVITE command
 			break;
 		case KICK:
+			std::cout << "Handling KICK command" << std::endl;
 			// Handle KICK command
 			break;
 		case KILL:
+			std::cout << "Handling KILL command" << std::endl;
 			// Handle KILL command
 			break;
 		case AWAY:
+			std::cout << "Handling AWAY command" << std::endl;
 			// Handle AWAY command
 			break;
 		case OPER:
+			std::cout << "Handling OPER command" << std::endl;
 			// Handle OPER command
 			break;
 		case SQUIT:
+			std::cout << "Handling SQUIT command" << std::endl;
 			// Handle SQUIT command
 			break;
 		case ERROR:
+			std::cout << "Handling ERROR command" << std::endl;
 			// Handle ERROR command
 			break;
 		case UNKNOWN:
+			std::cout << "Handling UNKNOWN command" << std::endl;
 			// Handle UNKNOWN command
 			break;
 	}
@@ -331,6 +357,8 @@ int	Server::handle_client_data(std::vector<pollfd> &pollfds, int clientSocketFD,
 		//if (std::string(buffer, bytesRead).find("\r\n") != std::string::npos) // irssi
 		if (std::string(buffer, bytesRead).find("\n") != std::string::npos) // netcat
 		{
+			this->_users.find(pollfds[i].fd)->second.second.set_verified(true);
+			command_executing(*this->_users.find(pollfds[i].fd));
 			std::cout << "[Server]" << this->_users.find(pollfds[i].fd)->second.second.get_user_name() << ": " << this->_users.find(pollfds[i].fd)->second.first << std::endl;
 			this->_users.find(pollfds[i].fd)->second.first = "";
 		}
