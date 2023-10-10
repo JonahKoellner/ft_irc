@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Chat.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jonahkollner <jonahkollner@student.42.f    +#+  +:+       +#+        */
+/*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 15:50:02 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/06 15:58:52 by jonahkollne      ###   ########.fr       */
+/*   Updated: 2023/10/10 09:59:16 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,6 @@ class Chat {
 	public:
 		Chat() {};
 		~Chat() {};
+		int		send_message_to_chat(std::string message, User user) { return (0); };
 		void	add_user(User user) {};
 };
