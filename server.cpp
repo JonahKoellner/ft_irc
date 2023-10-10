@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 16:01:30 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/10 10:32:16 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/10 17:04:07 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,65 +63,77 @@ int	Server::start_listening() {
 	parer returns the comman name
 	command excutes the given command from the parser
 */
-COMMANDS parse(std::string command_message) {
-	COMMANDS command = ERROR;
-
-	if (command_message[0] != '/')
-		return (command);
-
-	std::string command_part = command_message.substr(1, command_message.find(' '));
-	command_part = command_part.substr(0, command_part.find('\n'));
-	if (command_part == "JOIN")
+COMMANDS parse_command_name(std::string command_name) {
+	COMMANDS command;
+	for (std::string::iterator it = command_name.begin(); it != command_name.end(); ++it)
+    	*it = toupper(*it);
+	if (command_name == "/JOIN")
 		command = JOIN;
-	else if (command_part == "NICK")
+	else if (command_name == "/ME")
+		command = ME;
+	else if (command_name == "/NICK")
 		command = NICK;
-	else if (command_part == "USER")
+	else if (command_name == "/USER")
 		command = USER;
-	else if (command_part == "PASS")
+	else if (command_name == "/PASS")
 		command = PASS;
-	else if (command_part == "CAP")
+	else if (command_name == "/CAP")
 		command = CAP;
-	else if (command_part == "PING")
+	else if (command_name == "/PING")
 		command = PING;
-	else if (command_part == "PONG")
+	else if (command_name == "/PONG")
 		command = PONG;
-	else if (command_part == "PRIVMSG")
+	else if (command_name == "/PRIVMSG")
 		command = PRIVMSG;
-	else if (command_part == "NOTICE")
+	else if (command_name == "/NOTICE")
 		command = NOTICE;
-	else if (command_part == "QUIT")
+	else if (command_name == "/QUIT")
 		command = QUIT;
-	else if (command_part == "PART")
+	else if (command_name == "/PART")
 		command = PART;
-	else if (command_part == "TOPIC")
+	else if (command_name == "/TOPIC")
 		command = TOPIC;
-	else if (command_part == "MODE")
+	else if (command_name == "/MODE")
 		command = MODE;
-	else if (command_part == "WHO")
+	else if (command_name == "/WHO")
 		command = WHO;
-	else if (command_part == "WHOIS")
+	else if (command_name == "/WHOIS")
 		command = WHOIS;
-	else if (command_part == "LIST")
+	else if (command_name == "/LIST")
 		command = LIST;
-	else if (command_part == "INVITE")
+	else if (command_name == "/INVITE")
 		command = INVITE;
-	else if (command_part == "KICK")
+	else if (command_name == "/KICK")
 		command = KICK;
-	else if (command_part == "KILL")
+	else if (command_name == "/KILL")
 		command = KILL;
-	else if (command_part == "AWAY")
+	else if (command_name == "/AWAY")
 		command = AWAY;
-	else if (command_part == "OPER")
+	else if (command_name == "/OPER")
 		command = OPER;
-	else if (command_part == "SQUIT")
+	else if (command_name == "/SQUIT")
 		command = SQUIT;
 	else
 		command = UNKNOWN;
 	return command;
 }
 
-int	send_user_message(std::pair<std::string, User> user_entry, std::string message) {
-	struct pollfd pfd = {user_entry.second.get_socket_fd(), POLLOUT, 0 };
+std::vector<std::string> parse_command(std::string command_message) {
+	std::vector<std::string> command_tokens;
+	const char* delimiters = " \r\n";
+	char *token = std::strtok((char *)command_message.c_str(), delimiters);
+	while (token)
+	{
+		command_tokens.push_back(std::string(token));
+		token = std::strtok(nullptr, delimiters);
+	}
+	for (int i = 0; i < command_tokens.size(); i++)
+		std::cout << "argument: " << command_tokens[i] << std::endl;
+	return (command_tokens);
+}
+
+int	Server::send_user_message(User user_entry, std::string message) {
+	struct pollfd pfd = {user_entry.get_socket_fd(), POLLOUT, 0 };
 	int poll_result = poll(&pfd, 1, -1);
 	if (poll_result < 0) {
 		std::cerr << "Error in poll(): " << strerror(errno) << std::endl;
@@ -132,7 +144,7 @@ int	send_user_message(std::pair<std::string, User> user_entry, std::string messa
 		return (1);
 	}
 	else if (pfd.revents & POLLOUT) {
-		ssize_t bytes_sent = send(user_entry.second.get_socket_fd(), message.c_str(), message.length(), 0);
+		ssize_t bytes_sent = send(user_entry.get_socket_fd(), message.c_str(), message.length(), 0);
 		if (bytes_sent < 0) {
 			std::cerr << "Error sending message: " << strerror(errno) << std::endl;
 			return (1);
@@ -151,33 +163,86 @@ int	send_user_message(std::pair<std::string, User> user_entry, std::string messa
 	}
 }
 
-int command_executing(std::pair<std::string, User> &user_entry) {
-	COMMANDS command = parse(user_entry.first);
+int	Server::create_channel(std::string channel_name) {
+	Chat new_channel;
+	new_channel.set_name(channel_name);
+	this->_chats.push_back(new_channel);
+	return (0);
+}
+
+int	Server::join_channel(User &user, std::string channel_name) {
+	// check if channel exists
+	for (int i = 0; i < this->_chats.size(); i++) {
+		std::cout << "inside" << std::endl;
+		if (this->_chats[i].get_name() == channel_name) {
+			this->_chats[i].add_user(user);
+			send_user_message(user, std::string("Joined channel" + channel_name + "\r\n"));
+			user.set_channel(&this->_chats[i]);
+			break;
+		}
+		if (i == this->_chats.size() - 1) {
+			create_channel(channel_name);
+			send_user_message(user, std::string("Created Channel " + channel_name + "\r\n"));
+			this->_chats[i].add_user(user);
+			send_user_message(user, std::string("Joined Channel " + channel_name + "\r\n"));
+			user.set_channel(&this->_chats[i]);
+		}
+	}
+	if (this->_chats.size() == 0){
+		create_channel(channel_name);
+		send_user_message(user, std::string("Created Channel " + channel_name + "\r\n"));
+		this->_chats[0].add_user(user);
+		send_user_message(user, std::string("Joined Channel " + channel_name + "\r\n"));
+		user.set_channel(&this->_chats[0]);
+	}
+	return (0);
+}
+
+int Server::command_executing(std::pair<std::string, User> &user_entry) {
+	std::vector<std::string> command_token = parse_command(user_entry.first);
+	COMMANDS command = parse_command_name(command_token[0]);
 	if (!user_entry.second.get_veification())
 	{
 		if (command == PASS)
 		{
 			// check password
 			// if correct
-			send_user_message(user_entry, "Password accepted\r\n");
-			user_entry.second.set_verified(true); // not a pointer so outside isnt changed
-			// else
-			// send wrong password message
+			if (command_token[1] == this->_password)
+			{
+				send_user_message(user_entry.second, "Password accepted\r\n");
+				user_entry.second.set_verified(true); // not a pointer so outside isnt changed
+			}
+			else
+				send_user_message(user_entry.second, "Wrong password\r\n");
 			return (1);
 		}
 		else
 		{
-			// send error / "give password" message
+			send_user_message(user_entry.second, "Please give password first '/PASS <password>'\r\n");
 			return (1);
 		}
 	}
+	std::string message;
 	switch (command) {
 		case JOIN:
 			std::cout << "Handling JOIN command" << std::endl;
+			if (join_channel(user_entry.second, command_token[1]))
+				send_user_message(user_entry.second, "Error joining channel\r\n");
 			// Handle JOIN command
+			break;
+		case ME:
+			std::cout << "Handling ME command" << std::endl;
+			for (int i = 1; i < command_token.size(); i++)
+				message += command_token[i] + " ";
+			user_entry.second.get_channel()->send_message_to_chat(user_entry.second.get_user_name() + ": " + message + "\r\n", user_entry.second);
+			// send message to the current channel
 			break;
 		case NICK:
 			std::cout << "Handling NICK command" << std::endl;
+			if (command_token.size() > 1) {
+				user_entry.second.get_channel()->send_message_to_chat(user_entry.second.get_user_name() + " --> " + command_token[1] + "\r\n", user_entry.second);
+				user_entry.second.set_user_name(command_token[1]);
+			}
 			// Handle NICK command
 			break;
 		case USER:
@@ -295,6 +360,7 @@ int	Server::handle_client_data(std::vector<pollfd> &pollfds, int clientSocketFD,
 		// Connection closed or error
 		close(clientSocketFD);
 		std::cout << this->_users.find(pollfds[i].fd)->second.second.get_user_name() << " disconnected." << std::endl;
+		this->_users.find(pollfds[i].fd)->second.second.get_channel()->send_message_to_chat(this->_users.find(pollfds[i].fd)->second.second.get_user_name() + " disconnected.\r\n", this->_users.find(pollfds[i].fd)->second.second);
 		this->_users.erase(pollfds[i].fd);
 		for (std::unordered_map<int, std::pair<std::string, User> >::iterator it = this->_users.begin(); it != this->_users.end(); ++it)
 		{
@@ -307,7 +373,6 @@ int	Server::handle_client_data(std::vector<pollfd> &pollfds, int clientSocketFD,
 		//if (std::string(buffer, bytesRead).find("\r\n") != std::string::npos) // irssi
 		if (std::string(buffer, bytesRead).find("\n") != std::string::npos) // netcat
 		{
-			//std::pair<int, std::pair<std::string, User> >& client_user = this->_users.find(pollfds[i].fd);
 			command_executing(this->_users.find(pollfds[i].fd)->second);
 			std::cout << "[Server]" << this->_users.find(pollfds[i].fd)->second.second.get_user_name() << ": " << this->_users.find(pollfds[i].fd)->second.first << std::endl;
 			this->_users.find(pollfds[i].fd)->second.first = "";
