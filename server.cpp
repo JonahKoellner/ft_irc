@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 16:01:30 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/10 09:59:50 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/10 10:15:36 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ int	Server::start_listening() {
 	parer returns the comman name
 	command excutes the given command from the parser
 */
-
 COMMANDS parse(std::string command_message) {
 	COMMANDS command = ERROR;
 
@@ -72,9 +71,6 @@ COMMANDS parse(std::string command_message) {
 
 	std::string command_part = command_message.substr(1, command_message.find(' '));
 	command_part = command_part.substr(0, command_part.find('\n'));
-	//std::transform(command_part.begin(), command_part.end(), command_part.begin(), ::toupper);
-
-
 	if (command_part == "JOIN")
 		command = JOIN;
 	else if (command_part == "NICK")
@@ -298,8 +294,8 @@ int	Server::handle_client_data(std::vector<pollfd> &pollfds, int clientSocketFD,
 	if (bytesRead <= 0) {
 		// Connection closed or error
 		close(clientSocketFD);
-		pollfds.erase(pollfds.begin() + i);
 		std::cout << this->_users.find(pollfds[i].fd)->second.second.get_user_name() << " disconnected." << std::endl;
+		pollfds.erase(pollfds.begin() + i);
 	} else {
 		// Process data from connected client
 		this->_users.find(pollfds[i].fd)->second.first += std::string(buffer, bytesRead);
