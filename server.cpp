@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 16:01:30 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/10 10:15:36 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/10 10:32:16 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,8 @@ COMMANDS parse(std::string command_message) {
 	return command;
 }
 
-int	send_user_message(std::pair<int, std::pair<std::string, User> > user_entry, std::string message) {
-	struct pollfd pfd = {user_entry.first, POLLOUT, 0 };
+int	send_user_message(std::pair<std::string, User> user_entry, std::string message) {
+	struct pollfd pfd = {user_entry.second.get_socket_fd(), POLLOUT, 0 };
 	int poll_result = poll(&pfd, 1, -1);
 	if (poll_result < 0) {
 		std::cerr << "Error in poll(): " << strerror(errno) << std::endl;
@@ -132,7 +132,7 @@ int	send_user_message(std::pair<int, std::pair<std::string, User> > user_entry, 
 		return (1);
 	}
 	else if (pfd.revents & POLLOUT) {
-		ssize_t bytes_sent = send(user_entry.first, message.c_str(), message.length(), 0);
+		ssize_t bytes_sent = send(user_entry.second.get_socket_fd(), message.c_str(), message.length(), 0);
 		if (bytes_sent < 0) {
 			std::cerr << "Error sending message: " << strerror(errno) << std::endl;
 			return (1);
@@ -151,16 +151,16 @@ int	send_user_message(std::pair<int, std::pair<std::string, User> > user_entry, 
 	}
 }
 
-int command_executing(std::pair<int, std::pair<std::string, User> > user_entry) {
-	COMMANDS command = parse(user_entry.second.first);
-	if (!user_entry.second.second.get_veification())
+int command_executing(std::pair<std::string, User> &user_entry) {
+	COMMANDS command = parse(user_entry.first);
+	if (!user_entry.second.get_veification())
 	{
 		if (command == PASS)
 		{
 			// check password
 			// if correct
 			send_user_message(user_entry, "Password accepted\r\n");
-			user_entry.second.second.set_verified(true); // not a pointer so outside isnt changed
+			user_entry.second.set_verified(true); // not a pointer so outside isnt changed
 			// else
 			// send wrong password message
 			return (1);
@@ -278,7 +278,7 @@ int	Server::handle_new_connection(std::vector<pollfd> &pollfds) {
 		perror("Error accepting connection");
 	} else {
 		std::cout << "New connection established." << std::endl;
-		std::string response("CAP LS\r\n");
+		std::string response("Welcome Traveler\r\n");
 		if (send(newSocket, response.c_str(), response.size(), 0) < 0)
 			return (std::cout << "Error sending CAP LS response" << std::endl, 1);
 		this->_users.insert(std::make_pair(newSocket, std::pair<std::string, User>("", User(newSocket))));
@@ -295,6 +295,11 @@ int	Server::handle_client_data(std::vector<pollfd> &pollfds, int clientSocketFD,
 		// Connection closed or error
 		close(clientSocketFD);
 		std::cout << this->_users.find(pollfds[i].fd)->second.second.get_user_name() << " disconnected." << std::endl;
+		this->_users.erase(pollfds[i].fd);
+		for (std::unordered_map<int, std::pair<std::string, User> >::iterator it = this->_users.begin(); it != this->_users.end(); ++it)
+		{
+			std::cout << "user: " << it->second.second.get_user_name() << std::endl;
+		}
 		pollfds.erase(pollfds.begin() + i);
 	} else {
 		// Process data from connected client
@@ -302,7 +307,8 @@ int	Server::handle_client_data(std::vector<pollfd> &pollfds, int clientSocketFD,
 		//if (std::string(buffer, bytesRead).find("\r\n") != std::string::npos) // irssi
 		if (std::string(buffer, bytesRead).find("\n") != std::string::npos) // netcat
 		{
-			command_executing(*this->_users.find(pollfds[i].fd));
+			//std::pair<int, std::pair<std::string, User> >& client_user = this->_users.find(pollfds[i].fd);
+			command_executing(this->_users.find(pollfds[i].fd)->second);
 			std::cout << "[Server]" << this->_users.find(pollfds[i].fd)->second.second.get_user_name() << ": " << this->_users.find(pollfds[i].fd)->second.first << std::endl;
 			this->_users.find(pollfds[i].fd)->second.first = "";
 		}
@@ -346,6 +352,7 @@ int	Server::start_server() {
 	int server_out;
 	if (this->bind_socket() || this->start_listening())
 		return (1);
+	std::cout << "Starting server..." << std::endl;
 	server_out = this->server_loop();
 	close(this->_serverSocketFD);
 	return (server_out);

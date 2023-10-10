@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 15:56:20 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/09 14:32:47 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/10 10:30:13 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,6 @@ class User{
 		int set_user_name(std::string userName) { this->_userName = userName; return (0);};
 		void	set_verified(bool verified) { this->_verified = verified; };
 		bool	get_veification() { return (this->_verified); };
+		int		get_socket_fd() {return (this->_socketFD);};
 		~User() {};
 };
