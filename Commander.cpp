@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:51:11 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/17 17:30:57 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/17 17:42:08 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int Commander::execute_command(std::vector<std::string> commandTokens) {
 		//else if (commandTokens[0] == "/CAP")
 		//else if (commandTokens[0] == "/PING")
 		//else if (commandTokens[0] == "/PONG")
-		else if (commandTokens[0] == "/PRIVMSG") {
+		else if (commandTokens[0] == "/PRIVMSG" && Executer(this->_database).get_user(this->_userSocket_FD).get_channel() != "") {
 			std::string full_sentence = "";
 			for (int i = 2; i < commandTokens.size(); i++)
 				full_sentence += commandTokens[i] + " ";
