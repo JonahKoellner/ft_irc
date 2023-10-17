@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:51:11 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/17 13:53:12 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/17 15:44:27 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,10 @@ int Commander::execute_command(std::vector<std::string> commandTokens) {
 		*it = toupper(*it);
 
 	std::string full_sentence = "";
-	for (int i = 0; i < commandTokens.size(); i++)
+	for (int i = 1; i < commandTokens.size(); i++)
 		full_sentence += commandTokens[i] + " ";
+	full_sentence.pop_back();
+	full_sentence += "\r\n";
 
 	//if (this->_user.get_verification()) {
 	if (Executer(this->_database).get_user(this->_userSocket_FD).get_verification()) {
@@ -106,10 +108,11 @@ int Commander::execute_command(std::vector<std::string> commandTokens) {
 		//else if (commandTokens[0] == "/SQUIT")
 		else
 			ret_val = -1; // "unknown" error code
-	} else if (commandTokens[0] == "/PASS")
-		Executer(this->_database).set_user_verified(this->_userSocket_FD, true);
+	} else if (commandTokens[0] == "/PASS") {
+		Executer(this->_database).set_user_verified(this->_userSocket_FD, Executer(this->_database).check_password(commandTokens[1]));
 		// let executer try the password and get the result
-		//ret_val = 0;
+		ret_val = 0;
+	}
 	else
 		ret_val = 1;
 	return (ret_val);

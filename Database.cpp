@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 09:57:30 by jkollner          #+#    #+#             */
-/*   Updated: 2023/10/17 14:21:33 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/17 15:41:17 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,10 @@ Database::Database(std::string password) {
 }
 
 int	Database::create_user(int userSocket) {
-	std::pair<std::unordered_map<int, User>::iterator, bool> result =
-		this->_users.insert(std::make_pair(userSocket, User(userSocket)));
-	return (result.second ? 1 : 0);
+	if (this->_users.find(userSocket) != this->_users.end())
+		return (1);
+	this->_users.insert(std::make_pair(userSocket, User(userSocket)));
+	return (0);
 }
 
 int	Database::delete_channel(std::string channelName) {
@@ -51,9 +52,10 @@ int Database::set_password(std::string new_password) {
 }
 
 int Database::create_channel(std::string channel_name) {
-	std::pair<std::unordered_map<std::string, Chat>::iterator, bool> result =
-		this->_chats.insert(std::make_pair(channel_name, Chat(channel_name)));
-	return (result.second ? 1 : 0);
+	if (this->_chats.find(channel_name) != this->_chats.end())
+		return (1); // channel already exists
+	this->_chats.insert(std::make_pair(channel_name, Chat(channel_name)));
+	return (0);
 }
 
 int Database::set_user_verification(bool verified, int userSocket) {
@@ -63,6 +65,7 @@ int Database::set_user_verification(bool verified, int userSocket) {
 
 int Database::add_user_channel(int userSocketFD, std::string channelName) {
 	this->_chats.find(channelName)->second.add_user(this->_users.find(userSocketFD)->second);
+	this->_users.find(userSocketFD)->second.set_channel(channelName);
 	return (0);
 }
 
@@ -76,7 +79,10 @@ int Database::set_channel_name(std::string oldChannelName, std::string newChanne
 }
 
 std::unordered_map<int, User> Database::get_channel_user(std::string channelName) {
-	return (this->_chats.find(channelName)->second.get_users());
+	std::unordered_map<std::string, Chat>::iterator it = this->_chats.find(channelName);
+	if (it == this->_chats.end())
+		return (std::unordered_map<int, User>());
+	return (it->second.get_users());
 }
 
 int Database::set_user_name(int userSocketFD, std::string userName) {

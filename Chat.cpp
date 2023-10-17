@@ -6,13 +6,14 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:22:10 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/17 14:23:09 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/17 15:13:19 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Chat.hpp"
 
 Chat::Chat(std::string name) {
+	std::cout << "Chat constructor" << std::endl;
 	this->_name = name;
 }
 

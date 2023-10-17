@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 10:07:19 by jkollner          #+#    #+#             */
-/*   Updated: 2023/10/17 15:02:48 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/17 15:22:40 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	ClientHandler::handle_new_connection(std::vector<pollfd> &pollfds) {
 		perror("Error accepting connection");
 	} else {
 		std::cout << "New connection established." << std::endl;
-		std::string response("Welcome Traveler\r\n");
+		std::string response("Welcome Traveler: User" + std::to_string(newSocket) + "\r\n");
 		if (send(newSocket, response.c_str(), response.size(), 0) < 0)
 			return (std::cout << "Error sending CAP LS response" << std::endl, 1);
 		Executer(this->_database).create_user(newSocket);
@@ -57,7 +57,6 @@ int	ClientHandler::handle_existing_client(std::vector<pollfd> &pollfds, int clie
 			// Key exists in map, append to existing value
 			it->second += std::string(buffer, bytesRead);
 		}
-		//this->_users.find(pollfds[i].fd)->second.first += std::string(buffer, bytesRead);
 		//if (std::string(buffer, bytesRead).find("\r\n") != std::string::npos) // irssi client
 		if (std::string(buffer, bytesRead).find("\n") != std::string::npos) // netcat
 		{
