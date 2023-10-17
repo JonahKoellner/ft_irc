@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:51:11 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/17 16:54:46 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/17 17:30:57 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,18 +52,21 @@ int Commander::execute_command(std::vector<std::string> commandTokens) {
 	for (std::string::iterator it = commandTokens[0].begin(); it != commandTokens[0].end(); ++it)
 		*it = toupper(*it);
 
-	std::string full_sentence = "";
-	for (int i = 1; i < commandTokens.size(); i++)
-		full_sentence += commandTokens[i] + " ";
-	// could also be a check for the first \n and replace. Could protect against people putting a '\n' in their message
-	full_sentence.pop_back();
-	full_sentence += "\r\n";
+
 
 	if (Executer(this->_database).get_user(this->_userSocket_FD).get_verification()) {
 		if (commandTokens[0] == "/JOIN")
 			ret_val = Executer(this->_database).join_channel(this->_userSocket_FD, commandTokens[1]);
 		else if (commandTokens[0] == "/ME")
+		{
+			std::string full_sentence = "";
+			for (int i = 1; i < commandTokens.size(); i++)
+				full_sentence += commandTokens[i] + " ";
+			// could also be a check for the first \n and replace. Could protect against people putting a '\n' in their message
+			full_sentence.pop_back();
+			full_sentence += "\r\n";
 			ret_val = Executer(this->_database).send_message_user_chat(this->_userSocket_FD, full_sentence);
+		}
 		else if (commandTokens[0] == "/NICK") {
 			Executer ex(this->_database);
 			std::string name = ex.get_user(this->_userSocket_FD).get_user_name();
@@ -76,9 +79,24 @@ int Commander::execute_command(std::vector<std::string> commandTokens) {
 		//else if (commandTokens[0] == "/CAP")
 		//else if (commandTokens[0] == "/PING")
 		//else if (commandTokens[0] == "/PONG")
-		//else if (commandTokens[0] == "/PRIVMSG")
+		else if (commandTokens[0] == "/PRIVMSG") {
+			std::string full_sentence = "";
+			for (int i = 2; i < commandTokens.size(); i++)
+				full_sentence += commandTokens[i] + " ";
+			// could also be a check for the first \n and replace. Could protect against people putting a '\n' in their message
+			full_sentence.pop_back();
+			full_sentence += "\r\n";
+			Executer(this->_database).send_private_message(this->_userSocket_FD, commandTokens[1], full_sentence);
+		}
 		//else if (commandTokens[0] == "/NOTICE")
-		//else if (commandTokens[0] == "/QUIT")
+		else if (commandTokens[0] == "/QUIT") {
+			Executer ex(this->_database);
+			ex.send_message_chat(ex.get_user(this->_userSocket_FD).get_channel(), "User" + std::to_string(this->_userSocket_FD) + " has left the chat.\r\n");
+			ex.remove_user_channel(this->_userSocket_FD);
+			ex.delete_user(this->_userSocket_FD);
+			//pollfds.erase(pollfds.begin() + i);
+			//close(this->_userSocket_FD); // TODO
+		}
 		//else if (commandTokens[0] == "/PART")
 		//else if (commandTokens[0] == "/TOPIC")
 		//else if (commandTokens[0] == "/MODE")

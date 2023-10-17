@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:51:25 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/17 16:16:56 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/17 17:29:36 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,18 @@ int	Executer::send_message_chat(std::string channelName, std::string message) {
 			if (send_user_message(it->second.get_socket_fd(), message))
 				return (1);
 	}
+	return (0);
+}
+
+int Executer::send_private_message(int userSocketFD, std::string targetUserName, std::string message) {
+	int targetFD = this->_database.get_user_fd(targetUserName);
+	std::string channelName = this->_database.get_user(targetFD).get_channel();
+	if (targetFD == -1 || channelName != this->_database.get_user(userSocketFD).get_channel()) {
+		send_user_message(userSocketFD, std::string("User is not in the same channel\r\n"));
+		return (1);
+	}
+	message = "[private] " + this->_database.get_user(userSocketFD).get_user_name() + ": " + message;
+	send_user_message(targetFD, message);
 	return (0);
 }
 

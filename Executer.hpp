@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 16:13:03 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/17 16:14:51 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/17 17:30:24 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ class Executer{
 		User	get_user(int userSocket_FD);
 		bool	check_password(std::string);
 		int	remove_user_channel(int userSocket);
+		int send_private_message(int userSocketFD, std::string targetUserName, std::string message);
+
 	public:
 		Executer(Database &database);
 

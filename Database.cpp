@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 09:57:30 by jkollner          #+#    #+#             */
-/*   Updated: 2023/10/17 16:14:14 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/17 17:26:26 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,14 @@ int Database::add_user_channel(int userSocketFD, std::string channelName) {
 
 User Database::get_user(int userSocketFD) {
 	return (this->_users.find(userSocketFD)->second);
+}
+
+int Database::get_user_fd(std::string userName) {
+	for (std::unordered_map<int, User>::iterator it = this->_users.begin(); it != this->_users.end(); it++) {
+		if (it->second.get_user_name() == userName)
+			return (it->second.get_socket_fd());
+	}
+	return (-1);
 }
 
 int Database::set_channel_name(std::string oldChannelName, std::string newChannelName) {
