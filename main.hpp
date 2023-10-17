@@ -6,11 +6,11 @@
 /*   By: jonahkollner <jonahkollner@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 15:45:31 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/06 16:31:55 by jonahkollne      ###   ########.fr       */
+/*   Updated: 2023/10/14 15:50:35 by jonahkollne      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
 #include <iostream>
-#include "server.hpp"
+#include "Server.hpp"

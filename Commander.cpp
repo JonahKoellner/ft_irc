@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commander.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jonahkollner <jonahkollner@student.42.f    +#+  +:+       +#+        */
+/*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:51:11 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/15 16:24:39 by jonahkollne      ###   ########.fr       */
+/*   Updated: 2023/10/17 13:53:12 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,24 +20,29 @@
 
 #include "Commander.hpp"
 
-int Commander::send_server_message(std::string message, Chat chat) {
-	std::string server_message = "[Server]: " + message + "\r\n";
-	std::cout << "message" << std::endl;
-	std::vector<User> users = chat.get_users();
-    for (std::vector<User>::iterator it = users.begin(); it != users.end(); it++) {
-			if (send(it->get_socket_fd(), server_message.c_str(), server_message.length(), 0) == -1) {
-				std::cerr << "Error sending message to user " << it->get_user_name() << std::endl;
-				return (1);
-		}
-	}
-	return (0);
-}
+//int Commander::send_server_message(std::string message, Chat chat) {
+//	std::string server_message = "[Server]: " + message + "\r\n";
+//	std::cout << "message" << std::endl;
+//	std::vector<User> users = chat.get_users();
+//    for (std::vector<User>::iterator it = users.begin(); it != users.end(); it++) {
+//			if (send(it->get_socket_fd(), server_message.c_str(), server_message.length(), 0) == -1) {
+//				std::cerr << "Error sending message to user " << it->get_user_name() << std::endl;
+//				return (1);
+//		}
+//	}
+//	return (0);
+//}
 
-Commander::Commander() : _user(*(new User(0))), _userChats(*(new std::unordered_map<std::string, Chat>())){}
-
-Commander::Commander(std::string commandString, User &user, std::unordered_map<std::string, Chat> &user_chat) : _user(user), _userChats(user_chat) {
+Commander::Commander(std::string commandString, int userSocket_FD, Database &database) : _database(database) {
 	this->_commandString = commandString;
+	this->_userSocket_FD = userSocket_FD;
 }
+
+//Commander::Commander() : _user(*(new User(0))), _userChats(*(new std::unordered_map<std::string, Chat>())){}
+
+//Commander::Commander(std::string commandString, User &user, std::unordered_map<std::string, Chat> &user_chat) : _user(user), _userChats(user_chat) {
+//	this->_commandString = commandString;
+//}
 
 int Commander::execute() {
 	std::vector<std::string> command_tokens = this->parse_command(this->_commandString);
@@ -66,14 +71,19 @@ int Commander::execute_command(std::vector<std::string> commandTokens) {
 	for (std::string::iterator it = commandTokens[0].begin(); it != commandTokens[0].end(); ++it)
 		*it = toupper(*it);
 
-	if (this->_user.get_verification()) {
+	std::string full_sentence = "";
+	for (int i = 0; i < commandTokens.size(); i++)
+		full_sentence += commandTokens[i] + " ";
+
+	//if (this->_user.get_verification()) {
+	if (Executer(this->_database).get_user(this->_userSocket_FD).get_verification()) {
 		if (commandTokens[0] == "/JOIN")
-			ret_val = Executer().join_channel(this->_user, this->_userChats, commandTokens[1]);
+			ret_val = Executer(this->_database).join_channel(this->_userSocket_FD, commandTokens[1]);
 		else if (commandTokens[0] == "/ME")
-			ret_val = Executer().send_message_chat(this->_user, this->_userChats.find(this->_user.get_channel())->second, commandTokens[2]);
+			ret_val = Executer(this->_database).send_message_user_chat(this->_userSocket_FD, full_sentence);
 		else if (commandTokens[0] == "/NICK")
 			// check in executer if the name is already taken. NO DUPLICATE NAMES
-			ret_val = Executer().set_userName(this->_user, commandTokens[1]);
+			ret_val = Executer(this->_database).set_userName(this->_userSocket_FD, commandTokens[1]);
 		//else if (commandTokens[0] == "/USER")
 		//else if (commandTokens[0] == "/PASS")
 		//else if (commandTokens[0] == "/CAP")
@@ -97,8 +107,9 @@ int Commander::execute_command(std::vector<std::string> commandTokens) {
 		else
 			ret_val = -1; // "unknown" error code
 	} else if (commandTokens[0] == "/PASS")
+		Executer(this->_database).set_user_verified(this->_userSocket_FD, true);
 		// let executer try the password and get the result
-		ret_val = 0;
+		//ret_val = 0;
 	else
 		ret_val = 1;
 	return (ret_val);
