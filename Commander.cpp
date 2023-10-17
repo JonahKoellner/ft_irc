@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:51:11 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/17 15:44:27 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/17 16:00:24 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,10 @@ int Commander::execute_command(std::vector<std::string> commandTokens) {
 	std::string full_sentence = "";
 	for (int i = 1; i < commandTokens.size(); i++)
 		full_sentence += commandTokens[i] + " ";
+	// could also be a check for the first \n and replace. Could protect against people putting a '\n' in their message
 	full_sentence.pop_back();
 	full_sentence += "\r\n";
 
-	//if (this->_user.get_verification()) {
 	if (Executer(this->_database).get_user(this->_userSocket_FD).get_verification()) {
 		if (commandTokens[0] == "/JOIN")
 			ret_val = Executer(this->_database).join_channel(this->_userSocket_FD, commandTokens[1]);
@@ -106,14 +106,22 @@ int Commander::execute_command(std::vector<std::string> commandTokens) {
 		//else if (commandTokens[0] == "/AWAY")
 		//else if (commandTokens[0] == "/OPER")
 		//else if (commandTokens[0] == "/SQUIT")
-		else
+		else {
+			Executer(this->_database).send_user_message(this->_userSocket_FD, std::string("Unknown command\r\n"));
 			ret_val = -1; // "unknown" error code
+		}
 	} else if (commandTokens[0] == "/PASS") {
-		Executer(this->_database).set_user_verified(this->_userSocket_FD, Executer(this->_database).check_password(commandTokens[1]));
-		// let executer try the password and get the result
+		bool verified = Executer(this->_database).check_password(commandTokens[1]);
+		Executer(this->_database).set_user_verified(this->_userSocket_FD, verified);
+		if (verified)
+			Executer(this->_database).send_user_message(this->_userSocket_FD, std::string("You are now verified\r\n"));
+		else
+			Executer(this->_database).send_user_message(this->_userSocket_FD, std::string("Wrong password\r\n"));
 		ret_val = 0;
 	}
-	else
+	else {
+		Executer(this->_database).send_user_message(this->_userSocket_FD, std::string("You need to be verified to use commands (/pass <password>)\r\n"));
 		ret_val = 1;
+	}
 	return (ret_val);
 }

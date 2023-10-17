@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 10:07:19 by jkollner          #+#    #+#             */
-/*   Updated: 2023/10/17 15:22:40 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/17 16:00:42 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,6 @@ int	ClientHandler::handle_existing_client(std::vector<pollfd> &pollfds, int clie
 		if (std::string(buffer, bytesRead).find("\n") != std::string::npos) // netcat
 		{
 			Commander(this->_clientData.find(clientSocketFD)->second, clientSocketFD, this->_database).execute();
-			//std::pair<std::string, User>& user_pair = this->_users.find(pollfds[i].fd)->second;
-			//Commander(user_pair.first, user_pair.second, this->_chats).execute();
-			//std::cout << "[Server]" << this->_users.find(pollfds[i].fd)->second.second.get_user_name() << ": " << this->_users.find(pollfds[i].fd)->second.first << std::endl;
 			this->_clientData.find(clientSocketFD)->second = std::string("");
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:51:25 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/17 15:45:46 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/17 15:51:39 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ Executer::Executer(Database &database) : _database(database){
 int	Executer::send_message_user_chat(int userSocketFD, std::string message) {
 	std::string channel_name = this->_database.get_user(userSocketFD).get_channel();
 	std::unordered_map<int, User> users = this->_database.get_channel_user(channel_name);
+	message = this->_database.get_user(userSocketFD).get_user_name() + ": " + message;
 	for (std::unordered_map<int, User>::iterator it = users.begin(); it != users.end(); it++) {
 		if (!(it->second.get_socket_fd() == userSocketFD)) {
 			if (send_user_message(it->second.get_socket_fd(), message))
