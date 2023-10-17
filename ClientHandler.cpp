@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 10:07:19 by jkollner          #+#    #+#             */
-/*   Updated: 2023/10/17 13:53:16 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/17 15:02:48 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,19 @@ int	ClientHandler::handle_existing_client(std::vector<pollfd> &pollfds, int clie
 		close(clientSocketFD);
 	} else {
 		// Process data from connected client
-		std::string clientString = (this->_clientData.find(clientSocketFD)->second += std::string(buffer, bytesRead));
+		std::unordered_map<int, std::string>::iterator it = this->_clientData.find(clientSocketFD);
+		if (it == this->_clientData.end()) {
+			// Key does not exist in map, insert new key-value pair
+			this->_clientData.insert(std::make_pair(clientSocketFD, std::string(buffer, bytesRead)));
+		} else {
+			// Key exists in map, append to existing value
+			it->second += std::string(buffer, bytesRead);
+		}
 		//this->_users.find(pollfds[i].fd)->second.first += std::string(buffer, bytesRead);
 		//if (std::string(buffer, bytesRead).find("\r\n") != std::string::npos) // irssi client
 		if (std::string(buffer, bytesRead).find("\n") != std::string::npos) // netcat
 		{
-			Commander(clientString, clientSocketFD, this->_database).execute();
+			Commander(this->_clientData.find(clientSocketFD)->second, clientSocketFD, this->_database).execute();
 			//std::pair<std::string, User>& user_pair = this->_users.find(pollfds[i].fd)->second;
 			//Commander(user_pair.first, user_pair.second, this->_chats).execute();
 			//std::cout << "[Server]" << this->_users.find(pollfds[i].fd)->second.second.get_user_name() << ": " << this->_users.find(pollfds[i].fd)->second.first << std::endl;
