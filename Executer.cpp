@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:51:25 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/17 15:51:39 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/17 16:16:56 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,7 @@ int	Executer::send_user_message(int	userSocketFD, std::string message) {
 int	Executer::join_channel(int userSocket_FD, std::string channel_name) {
 	this->_database.create_channel(channel_name);
 	this->_database.add_user_channel(userSocket_FD, channel_name);
-	std::unordered_map<int, User> users = this->_database.get_channel_user(channel_name);
-	std::cout << "Channel size " << std::to_string(users.size()) << std::endl;
+	send_message_chat(channel_name, "User" + std::to_string(userSocket_FD) + " has joined the chat.\r\n");
 	return (0);
 }
 
@@ -120,3 +119,7 @@ int Executer::delete_user(int userSocket) {
 	return (0);
 }
 
+int Executer::remove_user_channel(int userSocket) {
+	this->_database.remove_user_channel(userSocket);
+	return (0);
+}
