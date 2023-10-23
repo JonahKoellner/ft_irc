@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:51:11 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/23 12:08:39 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/23 12:42:45 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,6 @@ int Commander::execute_command(std::vector<std::string> commandTokens) {
 		return (1);
 	for (std::string::iterator it = commandTokens[0].begin(); it != commandTokens[0].end(); ++it)
 		*it = toupper(*it);
-
-
 
 	if (Executer(this->_database).get_user(this->_userSocket_FD).get_verification()) {
 		if (commandTokens[0] == "/JOIN")

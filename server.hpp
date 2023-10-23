@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.hpp                                         :+:      :+:    :+:   */
+/*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 15:46:17 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/17 10:10:17 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/23 12:14:02 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,10 @@
 
 class Server {
 	private:
-		std::string												_servername;
-		int														_port;
-		int														_serverSocketFD;
-		Database												_database;
-		//std::string												_password;
-		//std::unordered_map<std::string, Chat>					_chats;
-		//std::unordered_map<int, std::pair<std::string, User> >	_users;
+		std::string	_servername;
+		int			_port;
+		int			_serverSocketFD;
+		Database	_database;
 		int	bind_socket();
 		int	start_listening();
 		int	server_loop();

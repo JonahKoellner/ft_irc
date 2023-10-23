@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 09:57:30 by jkollner          #+#    #+#             */
-/*   Updated: 2023/10/23 12:05:27 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/23 13:13:27 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ Database::Database(std::string password) {
 	_password = password;
 }
 
-int	Database::create_user(int userSocket) {
+int	Database::create_user(int userSocket, std::string ip) {
 	if (this->_users.find(userSocket) != this->_users.end())
 		return (1);
-	this->_users.insert(std::make_pair(userSocket, User(userSocket)));
+	this->_users.insert(std::make_pair(userSocket, User(userSocket, ip)));
 	return (0);
 }
 

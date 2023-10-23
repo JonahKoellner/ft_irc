@@ -6,7 +6,7 @@
 #    By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/08 09:50:40 by jkollner          #+#    #+#              #
-#    Updated: 2023/10/17 13:57:22 by jkollner         ###   ########.fr        #
+#    Updated: 2023/10/23 12:10:50 by jkollner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,10 +22,10 @@ ${name}: ${obj}
 	${cc} ${cflags} ${obj} -o ${name}
 
 clean:
-	rm ${obj}
+	rm -f ${obj}
 
 fclean: clean
-	rm ${name}
+	rm -f ${name}
 
 re:	fclean all
 

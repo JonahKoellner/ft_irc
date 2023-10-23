@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:51:25 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/23 12:07:15 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/23 13:14:20 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,8 +141,8 @@ int	Executer::set_user_verified(int userSocketFD, bool verified) {
 	return (0);
 }
 
-int	Executer::create_user(int userSocket) {
-	this->_database.create_user(userSocket);
+int	Executer::create_user(int userSocket, std::string ip) {
+	this->_database.create_user(userSocket, ip);
 	return (0);
 }
 

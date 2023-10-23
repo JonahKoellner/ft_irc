@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   User.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jonahkollner <jonahkollner@student.42.f    +#+  +:+       +#+        */
+/*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:34:01 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/14 15:51:00 by jonahkollne      ###   ########.fr       */
+/*   Updated: 2023/10/23 13:15:23 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,15 @@ User::User(int socketFD) {
 	this->_verified = false;
 	this->_userName = std::string("User") + std::to_string(socketFD);
 	this->_currentChannel = "";
+	this->_ip = "";
+}
+
+User::User(int socketFD, std::string ip) {
+	this->_socketFD = socketFD;
+	this->_verified = false;
+	this->_userName = std::string("User") + std::to_string(socketFD);
+	this->_currentChannel = "";
+	this->_ip = ip;
 }
 
 std::string	User::get_user_name() {

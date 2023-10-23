@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 09:59:03 by jkollner          #+#    #+#             */
-/*   Updated: 2023/10/17 13:58:11 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/23 13:10:07 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <poll.h>
 #include <vector>
 #include <unistd.h>
+#include <arpa/inet.h>
 #include "Executer.hpp"
 #include "Commander.hpp"
 

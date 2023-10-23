@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 10:07:19 by jkollner          #+#    #+#             */
-/*   Updated: 2023/10/23 10:56:41 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/23 13:18:24 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,18 @@ int ClientHandler::handle(std::vector<pollfd> &pollfds, int clientSocketFD, int 
 
 int	ClientHandler::handle_new_connection(std::vector<pollfd> &pollfds) {
 	int	newSocket;
-	if ((newSocket = accept(this->_serverSocketFD, nullptr, nullptr)) == -1) {
+	sockaddr_storage	clientAddress;
+	socklen_t			clientAddressSize = sizeof(clientAddress);
+	if ((newSocket = accept(this->_serverSocketFD, (sockaddr*)&clientAddress, &clientAddressSize)) == -1) {
 		perror("Error accepting connection");
 	} else {
-		std::cout << "New connection established." << std::endl;
+		std::string ip = inet_ntoa(((sockaddr_in*)&clientAddress)->sin_addr);
+        int port = ntohs(((sockaddr_in*)&clientAddress)->sin_port);
+		std::cout << "New connection established. (" << ip << ":" << std::to_string(port) << ")" << std::endl;
 		std::string response("Welcome Traveler: User" + std::to_string(newSocket) + "\r\n");
 		if (send(newSocket, response.c_str(), response.size(), 0) < 0)
 			return (std::cout << "Error sending CAP LS response" << std::endl, 1);
-		Executer(this->_database).create_user(newSocket);
+		Executer(this->_database).create_user(newSocket, ip + ":" + std::to_string(port));
 		pollfds.push_back((pollfd){newSocket, POLLIN});
 	}
 	return (0);

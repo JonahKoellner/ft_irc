@@ -6,15 +6,15 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 16:13:03 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/23 12:07:12 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/23 13:17:12 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
+#include <unordered_set>
 #include "User.hpp"
 #include "Chat.hpp"
-#include <unordered_set>
 #include "Database.hpp"
 
 class Executer{
@@ -30,7 +30,7 @@ class Executer{
 		int	set_user_verified(int userSocketFD, bool verified);
 		int set_channelName(int userSocketFD, std::string oldChannelName, std::string newChannelName);
 		int	delete_user(int userSocket);
-		int	create_user(int userSocket);
+		int	create_user(int userSocket, std::string ip);
 		int	create_channel(std::string channel_name);
 		int	delete_channel(std::string channelName);
 		User	get_user(int userSocket_FD);

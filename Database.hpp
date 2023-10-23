@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 09:46:18 by jkollner          #+#    #+#             */
-/*   Updated: 2023/10/23 12:05:05 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/23 13:14:08 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ class Database {
 		std::unordered_map<int, User>	_users;
 		int	set_password(std::string new_password);
 		int	create_channel(std::string channel_name);
-		int	create_user(int userSocket);
+		int	create_user(int userSocket, std::string ip);
 		int	delete_user(int userSocket);
 		int	delete_channel(std::string channelName);
 		int	set_channel_name(std::string oldChannelName, std::string newChannelName);
