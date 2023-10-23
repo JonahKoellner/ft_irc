@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:51:25 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/23 10:58:09 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/23 12:07:15 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,4 +154,15 @@ int Executer::delete_user(int userSocket) {
 int Executer::remove_user_channel(int userSocket) {
 	this->_database.remove_user_channel(userSocket);
 	return (0);
+}
+
+int Executer::list_channel( int userSocketFD ) {
+	std::unordered_map<std::string, Chat> channels = this->_database.get_all_channel();
+	std::string list_message = "";
+	list_message += ("Channels:\n");
+	for (std::unordered_map<std::string, Chat>::iterator it = channels.begin(); it != channels.end(); it++) {
+		list_message+= ("\t-'" + it->first + "'\n");
+	}
+	list_message += "\r\n";
+	return (send_user_message(userSocketFD, list_message));
 }

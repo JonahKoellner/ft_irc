@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:22:10 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/23 10:49:31 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/23 11:59:58 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ Chat::Chat(std::string name) {
 	this->_name = name;
 }
 
-//std::string Chat::get_name() {
-//	return(this->_name);
-//}
+std::string Chat::get_name() {
+	return(this->_name);
+}
 
 void Chat::set_name(std::string name) {
 	this->_name = name;

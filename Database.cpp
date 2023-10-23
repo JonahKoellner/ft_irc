@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 09:57:30 by jkollner          #+#    #+#             */
-/*   Updated: 2023/10/23 10:50:22 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/23 12:05:27 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,10 @@ int Database::set_user_name(int userSocketFD, std::string userName) {
 
 Chat Database::get_channel(std::string channelName) {
 	return (this->_chats.find(channelName)->second);
+}
+
+std::unordered_map<std::string, Chat> Database::get_all_channel( void ) {
+	return (this->_chats);
 }
 
 Database::~Database() {

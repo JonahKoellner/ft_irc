@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 09:46:18 by jkollner          #+#    #+#             */
-/*   Updated: 2023/10/23 10:49:51 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/23 12:05:05 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ class Database {
 		int	add_user_channel(int userSocket, std::string channelName);
 		int get_user_fd(std::string userName);
 		Chat get_channel(std::string channelName);
+		std::unordered_map<std::string, Chat> get_all_channel( void );
 
 	public:
 		Database(std::string password);

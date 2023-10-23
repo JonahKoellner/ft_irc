@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 15:50:02 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/23 10:52:07 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/23 12:00:01 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ class Chat {
 		Chat(std::string name);
 		~Chat();
 		int size();
-		//std::string	get_name();
+		std::string	get_name();
 		//std::vector<User>	get_users();
 
 		friend class Database;
