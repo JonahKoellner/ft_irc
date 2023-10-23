@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 09:57:30 by jkollner          #+#    #+#             */
-/*   Updated: 2023/10/23 10:29:51 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/23 10:50:22 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,10 +89,10 @@ int Database::set_channel_name(std::string oldChannelName, std::string newChanne
 	return (0);
 }
 
-std::unordered_map<int, User> Database::get_channel_user(std::string channelName) {
+std::unordered_map<int, int> Database::get_channel_user(std::string channelName) {
 	std::unordered_map<std::string, Chat>::iterator it = this->_chats.find(channelName);
 	if (it == this->_chats.end())
-		return (std::unordered_map<int, User>());
+		return (std::unordered_map<int, int>());
 	return (it->second.get_users());
 }
 

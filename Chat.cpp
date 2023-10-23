@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:22:10 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/17 15:13:19 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/23 10:49:31 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ int Chat::add_user(User user) {
 		// User already exists in the chat
 		return -1;
 	}
-	this->_users.insert(std::make_pair(userSocket, user));
+	this->_users.insert(std::make_pair(userSocket, this->_users.size()));
 	return 0;
 }
 
-std::unordered_map<int, User> Chat::get_users() {
+std::unordered_map<int, int> Chat::get_users() {
 	return (this->_users);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 10:07:19 by jkollner          #+#    #+#             */
-/*   Updated: 2023/10/17 17:42:23 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/23 10:56:41 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	ClientHandler::handle_existing_client(std::vector<pollfd> &pollfds, int clie
 	if (bytesRead <= 0) {
 		// Connection closed or error
 		Executer ex(this->_database);
-		ex.send_message_chat(ex.get_user(clientSocketFD).get_channel(), "User" + std::to_string(clientSocketFD) + " has left the chat.\r\n");
+		ex.send_message_chat(ex.get_user(clientSocketFD).get_channel(), ex.get_user(clientSocketFD).get_user_name() + " has left the chat.\r\n");
 		ex.remove_user_channel(clientSocketFD);
 		ex.delete_user(clientSocketFD);
 		pollfds.erase(pollfds.begin() + i);

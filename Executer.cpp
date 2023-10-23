@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:51:25 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/23 10:35:47 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/23 10:58:09 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ Executer::Executer(Database &database) : _database(database){
 
 int	Executer::send_message_user_chat(int userSocketFD, std::string message) {
 	std::string channel_name = this->_database.get_user(userSocketFD).get_channel();
-	std::unordered_map<int, User> users = this->_database.get_channel_user(channel_name);
+	std::unordered_map<int, int> users = this->_database.get_channel_user(channel_name);
 	message = this->_database.get_user(userSocketFD).get_user_name() + ": " + message;
-	for (std::unordered_map<int, User>::iterator it = users.begin(); it != users.end(); it++) {
-		if (!(it->second.get_socket_fd() == userSocketFD)) {
-			if (send_user_message(it->second.get_socket_fd(), message))
+	for (std::unordered_map<int, int>::iterator it = users.begin(); it != users.end(); it++) {
+		if (!(it->first == userSocketFD)) {
+			if (send_user_message(it->first, message))
 				return (1);
 		}
 	}
@@ -31,9 +31,9 @@ int	Executer::send_message_user_chat(int userSocketFD, std::string message) {
 }
 
 int	Executer::send_message_chat(std::string channelName, std::string message) {
-	std::unordered_map<int, User> users = this->_database.get_channel_user(channelName);
-	for (std::unordered_map<int, User>::iterator it = users.begin(); it != users.end(); it++) {
-			if (send_user_message(it->second.get_socket_fd(), message))
+	std::unordered_map<int, int> users = this->_database.get_channel_user(channelName);
+	for (std::unordered_map<int, int>::iterator it = users.begin(); it != users.end(); it++) {
+			if (send_user_message(it->first, message))
 				return (1);
 	}
 	return (0);
@@ -61,11 +61,11 @@ int Executer::list_user_channel(int userSocketFD) {
 	User user = this->_database.get_user(userSocketFD);
 	if (user.get_socket_fd() == -1)
 		return (-1);
-	std::unordered_map<int, User> users = this->_database.get_channel_user(user.get_channel());
+	std::unordered_map<int, int> users = this->_database.get_channel_user(user.get_channel());
 	std::string list_message = "";
-	list_message += ("Users in channel " + user.get_channel() + ":\n");
-	for (std::unordered_map<int, User>::iterator it = users.begin(); it != users.end(); it++) {
-		list_message+= ("\t-'" + it->second.get_user_name() + "'\n");
+	list_message += ("Users in channel '" + user.get_channel() + "':\n");
+	for (std::unordered_map<int, int>::iterator it = users.begin(); it != users.end(); it++) {
+		list_message+= ("\t-'" + this->_database.get_user(it->first).get_user_name() + "'\n");
 	}
 	send_user_message(userSocketFD, (list_message + "\r\n"));
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 09:46:18 by jkollner          #+#    #+#             */
-/*   Updated: 2023/10/23 10:29:59 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/23 10:49:51 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ class Database {
 		int	set_channel_name(std::string oldChannelName, std::string newChannelName);
 		int	set_user_name(int userSocketFD, std::string userName);
 		User	get_user(int userSocketFD);
-		std::unordered_map<int, User> get_channel_user(std::string channelName);
+		std::unordered_map<int, int> get_channel_user(std::string channelName);
 		int	remove_user_channel(int userSocket);
 		int	set_user_verification(bool verified, int userSocket);
 		int	add_user_channel(int userSocket, std::string channelName);
