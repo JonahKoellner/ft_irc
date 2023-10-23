@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 15:50:02 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/17 14:21:49 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/23 10:43:53 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,13 @@
 #include <netinet/in.h>
 #include <unordered_map>
 #include "User.hpp"
+#include "irc_bot/Bot.hpp"
 
 class Chat {
 	private:
-		//std::vector<User>	_users;
 		std::unordered_map<int, User> _users;
 		std::string			_name;
+		//std::unordered_map<std::string, Bot> _bots;
 		void				set_name(std::string name);
 		int					add_user(User user);
 		int					remove_user(int	userSocket);
@@ -38,6 +39,5 @@ class Chat {
 		//std::string	get_name();
 		//std::vector<User>	get_users();
 
-		//friend class Executer;
 		friend class Database;
 };

@@ -6,13 +6,14 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 14:15:52 by jkollner          #+#    #+#             */
-/*   Updated: 2023/10/20 14:29:23 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/23 09:58:32 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
 #include <string>
+#include <vector>
 #include "Bot.hpp"
 
 /**
@@ -21,8 +22,13 @@
  * Can disconnect User entirely
 */
 
-class ModerationBot : public Bot {
+class ModerationBot : private Bot {
+	private:
+		//std::vector<std::string> fobiddenWords;
 	public:
+		//ModerationBot() : forbiddenWords{"Asshole", "Cunt", "Bitch", "Motherfucker"}{
+
+		//};
 		ModerationBot();
 		~ModerationBot();
 };

@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 09:46:18 by jkollner          #+#    #+#             */
-/*   Updated: 2023/10/17 17:26:38 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/23 10:29:59 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ class Database {
 		int	set_user_verification(bool verified, int userSocket);
 		int	add_user_channel(int userSocket, std::string channelName);
 		int get_user_fd(std::string userName);
+		Chat get_channel(std::string channelName);
 
 	public:
 		Database(std::string password);

@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:51:11 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/17 17:42:08 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/23 10:30:35 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,12 +97,14 @@ int Commander::execute_command(std::vector<std::string> commandTokens) {
 			//pollfds.erase(pollfds.begin() + i);
 			//close(this->_userSocket_FD); // TODO
 		}
+		else if (commandTokens[0] == "/LIST"){
+			Executer(this->_database).list_user_channel(this->_userSocket_FD);
+		}
 		//else if (commandTokens[0] == "/PART")
 		//else if (commandTokens[0] == "/TOPIC")
 		//else if (commandTokens[0] == "/MODE")
 		//else if (commandTokens[0] == "/WHO")
 		//else if (commandTokens[0] == "/WHOIS")
-		//else if (commandTokens[0] == "/LIST")
 		//else if (commandTokens[0] == "/INVITE")
 		//else if (commandTokens[0] == "/KICK")
 		//else if (commandTokens[0] == "/KILL")

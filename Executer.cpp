@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:51:25 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/17 17:44:06 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/10/23 10:35:47 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,20 @@ int Executer::send_private_message(int userSocketFD, std::string targetUserName,
 	}
 	message = "[private] " + this->_database.get_user(userSocketFD).get_user_name() + ": " + message;
 	send_user_message(targetFD, message);
+	return (0);
+}
+
+int Executer::list_user_channel(int userSocketFD) {
+	User user = this->_database.get_user(userSocketFD);
+	if (user.get_socket_fd() == -1)
+		return (-1);
+	std::unordered_map<int, User> users = this->_database.get_channel_user(user.get_channel());
+	std::string list_message = "";
+	list_message += ("Users in channel " + user.get_channel() + ":\n");
+	for (std::unordered_map<int, User>::iterator it = users.begin(); it != users.end(); it++) {
+		list_message+= ("\t-'" + it->second.get_user_name() + "'\n");
+	}
+	send_user_message(userSocketFD, (list_message + "\r\n"));
 	return (0);
 }
 
