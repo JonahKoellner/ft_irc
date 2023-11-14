@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ClientHandler.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 10:07:19 by jkollner          #+#    #+#             */
-/*   Updated: 2023/11/14 16:28:43 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/11/14 21:02:08 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	ClientHandler::handle_new_connection(std::vector<pollfd> &pollfds) {
 
 
 		Executer(this->_database).create_user(newSocket, ip + ":" + std::to_string(port));
-		pollfds.push_back((pollfd){newSocket, POLLIN});
+		pollfds.push_back((pollfd){newSocket, POLLIN, 0});
 	}
 	return (0);
 }

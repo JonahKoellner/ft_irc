@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.cpp                                         :+:      :+:    :+:   */
+/*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 16:01:30 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/17 13:57:01 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/11/14 20:56:17 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	Server::start_listening() {
 
 int	Server::server_loop() {
 	std::vector<pollfd> fds;
-	fds.push_back((pollfd){this->_serverSocketFD, POLLIN}); // Add server socket to the poll set
+	fds.push_back((pollfd){this->_serverSocketFD, POLLIN, 0}); // Add server socket to the poll set
 	ClientHandler CH(this->_serverSocketFD, this->_database);
 
 	while (true) {

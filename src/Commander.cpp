@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commander.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:51:11 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/11/14 16:34:56 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/11/14 21:01:59 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ std::vector<std::string> Commander::parse_command(std::string commandString) {
 }
 
 int Commander::execute_command(std::vector<std::string> commandTokens) {
-	int	ret_val;
+	int	ret_val = 0;
 
 	if (commandTokens.size() == 0)
 		return (1);
@@ -58,7 +58,7 @@ int Commander::execute_command(std::vector<std::string> commandTokens) {
 		else if (commandTokens[0] == "ME")
 		{
 			std::string full_sentence = "";
-			for (int i = 1; i < commandTokens.size(); i++)
+			for (size_t i = 1; i < commandTokens.size(); i++)
 				full_sentence += commandTokens[i] + " ";
 			// could also be a check for the first \n and replace. Could protect against people putting a '\n' in their message
 			full_sentence.pop_back();
@@ -79,7 +79,7 @@ int Commander::execute_command(std::vector<std::string> commandTokens) {
 		//else if (commandTokens[0] == "/PONG")
 		else if (commandTokens[0] == "PRIVMSG" && Executer(this->_database).get_user(this->_userSocket_FD).get_channel() != "") {
 			std::string full_sentence = "";
-			for (int i = 2; i < commandTokens.size(); i++)
+			for (size_t i = 2; i < commandTokens.size(); i++)
 				full_sentence += commandTokens[i] + " ";
 			// could also be a check for the first \n and replace. Could protect against people putting a '\n' in their message
 			full_sentence.pop_back();

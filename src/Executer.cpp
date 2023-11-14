@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Executer.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:51:25 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/23 13:14:20 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/11/14 20:58:48 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	Executer::send_user_message(int	userSocketFD, std::string message) {
 			std::cout << "Error sending message: " << strerror(errno) << std::endl;
 			return (1);
 		}
-		else if (bytes_sent != message.length()) {
+		else if (bytes_sent != static_cast<ssize_t>(message.length())) {
 			std::cout << "Incomplete message sent" << std::endl;
 			return (1);
 		}

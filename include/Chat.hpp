@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Chat.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 15:50:02 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/23 12:00:01 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/11/14 20:55:27 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include <netinet/in.h>
 #include <unordered_map>
 #include "User.hpp"
-#include "irc_bot/Bot.hpp"
+#include "Bot.hpp"
 
 class Chat {
 	private:

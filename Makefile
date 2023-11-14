@@ -3,30 +3,42 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+         #
+#    By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/09/08 09:50:40 by jkollner          #+#    #+#              #
-#    Updated: 2023/10/23 12:10:50 by jkollner         ###   ########.fr        #
+#    Created: 2023/11/14 20:49:14 by mreidenb          #+#    #+#              #
+#    Updated: 2023/11/14 21:20:46 by mreidenb         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-name = irc
-cc = c++
-cflags = -Wall -Werror -Wextra -std=c++98
-src = main.cpp Server.cpp User.cpp Chat.cpp Executer.cpp Commander.cpp ClientHandler.cpp Database.cpp
-obj = ${src:.cpp=.o}
+NAME = irc
+OBJS = $(addprefix .obj/, $(SRC_FILES:.cpp=.o)) .obj/main.o
+CXX = c++
+CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -I include
 
-all: ${name}
+SRC_FILES = Server.cpp User.cpp Chat.cpp Executer.cpp Commander.cpp ClientHandler.cpp Database.cpp
+SRCS = $(addprefix src/, $(SRC_FILES)) main.cpp
 
-${name}: ${obj}
-	${cc} ${cflags} ${obj} -o ${name}
+INCLUDE_FILES = Server.hpp User.hpp Chat.hpp Executer.hpp Commander.hpp ClientHandler.hpp Database.hpp Bot.hpp
+INCLUDES = $(addprefix include/, $(INCLUDE_FILES))
+
+all: $(NAME)
+
+$(NAME): $(OBJS)
+	$(CXX) $(CXXFLAGS) $(OBJS) -o $(NAME)
+
+.obj/%.o: src/%.cpp
+	mkdir -p .obj
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+.obj/main.o: main.cpp
+	mkdir -p .obj
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -f ${obj}
+	rm -f $(OBJS)
 
 fclean: clean
-	rm -f ${name}
+	rm -f $(NAME)
 
-re:	fclean all
+re: fclean all
 
-.PHONY: all ${name} clean fclean
+.PHONY: all clean fclean re
