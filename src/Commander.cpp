@@ -6,7 +6,7 @@
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:51:11 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/11/14 21:01:59 by mreidenb         ###   ########.fr       */
+/*   Updated: 2023/11/27 20:35:58 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ std::vector<std::string> Commander::parse_command(std::string commandString) {
 		command_tokens.push_back(std::string(token));
 		token = std::strtok(nullptr, delimiters);
 	}
-	//for (int i = 0; i < command_tokens.size(); i++)
-	//	std::cout << "argument: " << command_tokens[i] << std::endl;
+	for (size_t i = 0; i < command_tokens.size(); i++)
+		std::cout << "argument: " << command_tokens[i] << std::endl;
 	return (command_tokens);
 }
 
@@ -52,18 +52,41 @@ int Commander::execute_command(std::vector<std::string> commandTokens) {
 	for (std::string::iterator it = commandTokens[0].begin(); it != commandTokens[0].end(); ++it)
 		*it = toupper(*it);
 
-	if (Executer(this->_database).get_user(this->_userSocket_FD).get_verification()) {
+	if (commandTokens[0] == "PASS") {
+		bool verified = Executer(this->_database).check_password(commandTokens[1]);
+		Executer(this->_database).set_user_verified(this->_userSocket_FD, verified);
+		if (verified)
+			Executer(this->_database).send_user_message(this->_userSocket_FD, std::string("You are now verified\r\n"));
+		else
+			Executer(this->_database).send_user_message(this->_userSocket_FD, std::string("Wrong password\r\n"));
+		ret_val = 0;
+	}
+	else if (commandTokens[0] == "PING")
+	{
+		Executer ex(this->_database);
+		ret_val = ex.handle_ping(this->_userSocket_FD, commandTokens[1]);
+	}
+	else if (Executer(this->_database).get_user(this->_userSocket_FD).get_verification()) {
 		if (commandTokens[0] == "JOIN")
-			ret_val = Executer(this->_database).join_channel(this->_userSocket_FD, commandTokens[1]);
-		else if (commandTokens[0] == "ME")
+		{
+			if (commandTokens.size() == 1)
+				ret_val = Executer(this->_database).join_channel(this->_userSocket_FD, "");
+			else if (commandTokens.size() == 2 && commandTokens[1][0] == '#')
+				ret_val = Executer(this->_database).join_channel(this->_userSocket_FD, commandTokens[1]);
+			else
+				ret_val = Executer(this->_database).send_user_message(this->_userSocket_FD, std::string("Invalid channel name, use #<channelName>\r\n"));
+		}
+		else if (commandTokens[0] == "PRIVMSG" 
+			&& commandTokens[1] == Executer(this->_database).get_user(this->_userSocket_FD).get_channel())
 		{
 			std::string full_sentence = "";
-			for (size_t i = 1; i < commandTokens.size(); i++)
+			for (size_t i = 0; i < commandTokens.size(); i++)
 				full_sentence += commandTokens[i] + " ";
 			// could also be a check for the first \n and replace. Could protect against people putting a '\n' in their message
 			full_sentence.pop_back();
 			full_sentence += "\r\n";
 			ret_val = Executer(this->_database).send_message_user_chat(this->_userSocket_FD, full_sentence);
+			std::cout << "full sentence: " << full_sentence << std::endl;
 		}
 		else if (commandTokens[0] == "NICK") {
 			Executer ex(this->_database);
@@ -75,7 +98,6 @@ int Commander::execute_command(std::vector<std::string> commandTokens) {
 		//else if (commandTokens[0] == "/USER")
 		//else if (commandTokens[0] == "/PASS")
 		//else if (commandTokens[0] == "/CAP")
-		//else if (commandTokens[0] == "/PING")
 		//else if (commandTokens[0] == "/PONG")
 		else if (commandTokens[0] == "PRIVMSG" && Executer(this->_database).get_user(this->_userSocket_FD).get_channel() != "") {
 			std::string full_sentence = "";
@@ -85,6 +107,8 @@ int Commander::execute_command(std::vector<std::string> commandTokens) {
 			full_sentence.pop_back();
 			full_sentence += "\r\n";
 			Executer(this->_database).send_private_message(this->_userSocket_FD, commandTokens[1], full_sentence);
+			std::cout << "commandTokens[1]: " << commandTokens[1] << std::endl;
+			std::cout << "full sentence low: " << full_sentence << "channel :" << Executer(this->_database).get_user(this->_userSocket_FD).get_channel() << std::endl;
 		}
 		//else if (commandTokens[0] == "/NOTICE")
 		else if (commandTokens[0] == "QUIT") {
@@ -117,17 +141,9 @@ int Commander::execute_command(std::vector<std::string> commandTokens) {
 			Executer(this->_database).send_user_message(this->_userSocket_FD, std::string("Unknown command\r\n"));
 			ret_val = -1; // "unknown" error code
 		}
-	} else if (commandTokens[0] == "PASS") {
-		bool verified = Executer(this->_database).check_password(commandTokens[1]);
-		Executer(this->_database).set_user_verified(this->_userSocket_FD, verified);
-		if (verified)
-			Executer(this->_database).send_user_message(this->_userSocket_FD, std::string("PRIVMSG user:You are now verified\r\n"));
-		else
-			Executer(this->_database).send_user_message(this->_userSocket_FD, std::string("Wrong password\r\n"));
-		ret_val = 0;
 	}
 	else {
-		Executer(this->_database).send_user_message(this->_userSocket_FD, std::string("You need to be verified to use commands (/pass <password>)\r\n"));
+		Executer(this->_database).send_user_message(this->_userSocket_FD, std::string("You need to be verified to use commands (/quote PASS <password>)\r\n"));
 		ret_val = 1;
 	}
 	return (ret_val);

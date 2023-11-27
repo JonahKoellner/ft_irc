@@ -1,17 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.hpp                                           :+:      :+:    :+:   */
+/*   Responder.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/06 15:45:31 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/11/27 17:10:04 by mreidenb         ###   ########.fr       */
+/*   Created: 2023/11/27 17:43:01 by mreidenb          #+#    #+#             */
+/*   Updated: 2023/11/27 17:43:14 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+class Responder
+{
+private:
+	/* data */
+public:
+	Responder(/* args */);
+	~Responder();
+};
 
-#include <iostream>
-#include "Server.hpp"
+Responder::Responder(/* args */)
+{
+}
 
+Responder::~Responder()
+{
+}

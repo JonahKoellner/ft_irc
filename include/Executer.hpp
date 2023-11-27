@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Executer.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 16:13:03 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/23 13:17:12 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/11/27 17:46:10 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ class Executer{
 		int send_private_message(int userSocketFD, std::string targetUserName, std::string message);
 		int list_user_channel(int userSocketFD);
 		int	list_channel( int userSocketFD );
+		int	handle_ping(int userSocketFD, const std::string &message);
 	public:
 		Executer(Database &database);
 

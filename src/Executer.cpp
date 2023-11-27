@@ -6,7 +6,7 @@
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:51:25 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/11/14 20:58:48 by mreidenb         ###   ########.fr       */
+/*   Updated: 2023/11/27 18:41:34 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ int	Executer::send_user_message(int	userSocketFD, std::string message) {
 			return (1);
 		}
 		else {
+			std::cout << "Message sent: " << message << std::endl;
 			return (0);
 		}
 	}
@@ -165,4 +166,9 @@ int Executer::list_channel( int userSocketFD ) {
 	}
 	list_message += "\r\n";
 	return (send_user_message(userSocketFD, list_message));
+}
+
+int Executer::handle_ping(int userSocketFD, const std::string &message) {
+	std::string pong = "PONG " + message + "\r\n";
+	return (send_user_message(userSocketFD, pong));
 }
