@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Database.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 09:46:18 by jkollner          #+#    #+#             */
-/*   Updated: 2023/10/23 13:14:08 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/11/30 18:31:43 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@
 class Database {
 	private:
 		/* data && Functions*/
-		std::string 											_password;
-		std::unordered_map<std::string, Chat>					_chats;
-		std::unordered_map<int, User>	_users;
+		std::string 							_password;
+		std::unordered_map<std::string, Chat>	_chats;
+		std::unordered_map<int, User>			_users;
 		int	set_password(std::string new_password);
 		int	create_channel(std::string channel_name);
 		int	create_user(int userSocket, std::string ip);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Chat.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:22:10 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/23 11:59:58 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/12/04 14:55:16 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void Chat::set_name(std::string name) {
 
 //std::vector<User> Chat::get_users() {
 //	return (this->_users);
-//}
+//}                                          
 
 int Chat::add_user(User user) {
 	int userSocket = user.get_socket_fd();
@@ -45,6 +45,14 @@ std::unordered_map<int, int> Chat::get_users() {
 
 int	Chat::remove_user(int userSocket) {
 	return (this->_users.erase(userSocket) > 0 ? 1 : 0);
+}
+
+int Chat::size() {
+	return (this->_users.size());
+}
+
+std::string Chat::get_topic() {
+	return (this->_topic);
 }
 
 Chat::~Chat() {}

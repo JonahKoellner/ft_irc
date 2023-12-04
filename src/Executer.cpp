@@ -6,7 +6,7 @@
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:51:25 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/11/27 18:41:34 by mreidenb         ###   ########.fr       */
+/*   Updated: 2023/12/04 15:02:59 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,31 @@ Executer::Executer(Database &database) : _database(database){
 	_blackListedChannelNames.insert("");
 }
 
-int	Executer::send_message_user_chat(int userSocketFD, std::string message) {
-	std::string channel_name = this->_database.get_user(userSocketFD).get_channel();
-	std::unordered_map<int, int> users = this->_database.get_channel_user(channel_name);
-	message = this->_database.get_user(userSocketFD).get_user_name() + ": " + message;
+int Executer::send_message_user_chat(int userSocketFD, std::string message, std::string channelName) {
+	// std::string channel_name = this->_database.get_user(userSocketFD).get_channel();
+	std::unordered_map<int, int> users = this->_database.get_channel_user(channelName);
+	std::string user_name = this->_database.get_user(userSocketFD).get_user_name();
+	std::string irc_message = "PRIVMSG " + channelName + " :" + user_name + ": " + message;
 	for (std::unordered_map<int, int>::iterator it = users.begin(); it != users.end(); it++) {
 		if (!(it->first == userSocketFD)) {
-			if (send_user_message(it->first, message))
+			if (send_user_message(it->first, irc_message))
 				return (1);
 		}
 	}
 	return (0);
 }
+// int	Executer::send_message_user_chat(int userSocketFD, std::string message) {
+// 	std::string channel_name = this->_database.get_user(userSocketFD).get_channel();
+// 	std::unordered_map<int, int> users = this->_database.get_channel_user(channel_name);
+// 	message = this->_database.get_user(userSocketFD).get_user_name() + ": " + message;
+// 	for (std::unordered_map<int, int>::iterator it = users.begin(); it != users.end(); it++) {
+// 		if (!(it->first == userSocketFD)) {
+// 			if (send_user_message(it->first, message))
+// 				return (1);
+// 		}
+// 	}
+// 	return (0);
+// }
 
 int	Executer::send_message_chat(std::string channelName, std::string message) {
 	std::unordered_map<int, int> users = this->_database.get_channel_user(channelName);
@@ -39,22 +52,32 @@ int	Executer::send_message_chat(std::string channelName, std::string message) {
 	return (0);
 }
 
+// int Executer::send_private_message(int userSocketFD, std::string targetUserName, std::string message) {
+// 	int targetFD = this->_database.get_user_fd(targetUserName);
+// 	User targetUser = this->_database.get_user(targetFD);
+
+// 	if (targetFD == -1 || targetUser.get_socket_fd() == -1) {
+// 		send_user_message(userSocketFD, std::string("User is not in the same channel\r\n"));
+// 		return (1);
+// 	}
+// 	std::string channelName = this->_database.get_user(userSocketFD).get_channel();
+// 	if (channelName == "" || channelName != this->_database.get_user(userSocketFD).get_channel()) {
+// 		send_user_message(userSocketFD, std::string("User is not in the same channel\r\n"));
+// 		return (1);
+// 	}
+// 	message = "[private] " + this->_database.get_user(userSocketFD).get_user_name() + ": " + message;
+// 	send_user_message(targetFD, message);
+// 	return (0);
+// }
+
 int Executer::send_private_message(int userSocketFD, std::string targetUserName, std::string message) {
 	int targetFD = this->_database.get_user_fd(targetUserName);
 	User targetUser = this->_database.get_user(targetFD);
 
-	if (targetFD == -1 || targetUser.get_socket_fd() == -1) {
-		send_user_message(userSocketFD, std::string("User is not in the same channel\r\n"));
+	if (targetFD == -1) {
+		send_user_message(userSocketFD, std::string("401 :No such nick/channel\r\n"));
 		return (1);
 	}
-	std::string channelName = this->_database.get_user(userSocketFD).get_channel();
-	if (channelName == "" || channelName != this->_database.get_user(userSocketFD).get_channel()) {
-		send_user_message(userSocketFD, std::string("User is not in the same channel\r\n"));
-		return (1);
-	}
-	message = "[private] " + this->_database.get_user(userSocketFD).get_user_name() + ": " + message;
-	send_user_message(targetFD, message);
-	return (0);
 }
 
 int Executer::list_user_channel(int userSocketFD) {
@@ -157,13 +180,14 @@ int Executer::remove_user_channel(int userSocket) {
 	return (0);
 }
 
-int Executer::list_channel( int userSocketFD ) {
+int Executer::list_channel( int userSocketFD, std::string nickName ) {
 	std::unordered_map<std::string, Chat> channels = this->_database.get_all_channel();
 	std::string list_message = "";
 	list_message += ("Channels:\n");
 	for (std::unordered_map<std::string, Chat>::iterator it = channels.begin(); it != channels.end(); it++) {
-		list_message+= ("\t-'" + it->first + "'\n");
+		list_message+= (":irc.majo.42 322 " + nickName + " " + it->first + " " + std::to_string(it->second.size()) + " :" + it->second.get_topic() + "'\n");
 	}
+	list_message += ":irc.majo.42 323 " + nickName + " :----End of List----\n";
 	list_message += "\r\n";
 	return (send_user_message(userSocketFD, list_message));
 }

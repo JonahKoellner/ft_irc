@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Commander.hpp                                      :+:      :+:    :+:   */
+/*   Commander copy.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:58:20 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/12/04 15:40:24 by mreidenb         ###   ########.fr       */
+/*   Updated: 2023/11/28 18:40:46 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,32 +18,15 @@
 
 class Commander{
 	private:
-		// std::string					_commandString;
-		std::string					_commandName;
-		std::vector<std::string>	_commandArguments;
+		std::string					_commandString;
 		//User 						&_user;
 		int 						_userSocket_FD;
 		Database					&_database;
-		// std::vector<std::string>	_commandTokens;
+		std::vector<std::string>	_commandTokens;
 		//std::unordered_map<std::string, Chat>		&_userChats;
 		std::vector<std::string>	tokenize_command(std::string commandString);
 		int	execute_command(std::vector<std::string> commandTokens);
 		std::vector<std::string> parse_command(std::string commandString);
-		int	handle_pass();
-		int	handle_user();
-		int	handle_cap();
-		int	handle_nick();
-		int	handle_privmsg();
-		int	handle_join();
-		int	handle_leave();
-		int	handle_who();
-		int	handle_list();
-		int	handle_users();
-		int	handle_names();
-		int	handle_quit();
-		int	handle_away();
-		int	handle_topic();
-		int	handle_ping();
 	public:
 		//Commander();
 		Commander(std::string commandString, int userSocket_FD, Database &database);
