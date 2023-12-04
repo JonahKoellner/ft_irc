@@ -6,12 +6,13 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 15:56:20 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/12/04 15:00:41 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/12/04 15:06:15 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 #include <iostream>
+#include <vector>
 
 class User{
 	private:
@@ -21,6 +22,7 @@ class User{
 		std::string _ip;
 		bool	_verified;
 		std::string	_currentChannel;
+		std::vector<std::string> _joinedChannel;
 		void	set_channel(std::string channelName);
 		int		set_user_nickName(std::string nickName);
 		void	set_verified(bool verified);

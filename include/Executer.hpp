@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Executer.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 16:13:03 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/11/27 17:46:10 by mreidenb         ###   ########.fr       */
+/*   Updated: 2023/12/04 15:08:57 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ class Executer{
 		int	send_user_message(int userSocket_FD, std::string message);
 		int	send_message_chat(std::string channelName, std::string message);
 		int send_message_user_chat(int userSocket_FD, std::string message);
-		int	set_userName(int userSocket_FD, std::string userName);
+		int	set_user_nickName(int userSocket_FD, std::string userName);
 		int	set_user_verified(int userSocketFD, bool verified);
 		int set_channelName(int userSocketFD, std::string oldChannelName, std::string newChannelName);
 		int	delete_user(int userSocket);

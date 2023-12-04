@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:34:01 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/12/04 15:00:08 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/12/04 15:07:57 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,6 @@ std::string User::get_user_nickName() {
 }
 
 int	User::set_user_nickName(std::string nickName) {
-	// check if name is invalid
-		// return errorCode invalidName (1)
-	// check for blacklisted names
-		// return errorCode bannedName (2)
 	this->_userName = nickName;
 	return (0);
 }
