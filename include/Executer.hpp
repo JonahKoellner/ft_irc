@@ -6,7 +6,7 @@
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 16:13:03 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/12/04 14:47:50 by mreidenb         ###   ########.fr       */
+/*   Updated: 2023/12/04 15:52:21 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ class Executer{
 		int	join_channel(int userSocket_FD, std::string channel_name);
 		int	send_user_message(int userSocket_FD, std::string message);
 		int	send_message_chat(std::string channelName, std::string message);
+		int send_message_user_chat(int userSocket_FD, std::string message);
+		int	set_user_nickName(int userSocket_FD, std::string userName);
 		// int send_message_user_chat(int userSocket_FD, std::string message);
 		int	send_message_user_chat(int userSocketFD, std::string message, std::string channelName);
 		int	set_userName(int userSocket_FD, std::string userName);

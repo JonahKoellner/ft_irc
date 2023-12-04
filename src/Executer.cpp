@@ -6,7 +6,7 @@
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:51:25 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/12/04 15:02:59 by mreidenb         ###   ########.fr       */
+/*   Updated: 2023/12/04 15:52:58 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,13 +133,13 @@ int	Executer::join_channel(int userSocket_FD, std::string channel_name) {
 	return (0);
 }
 
-int	Executer::set_userName(int userSocketFD, std::string userName) {
+int	Executer::set_user_nickName(int userSocketFD, std::string userName) {
 	if (_blackListedNames.find(userName) != _blackListedNames.end()) {
 		send_user_message(userSocketFD, std::string("Username is blacklisted\r\n"));
 		return (1);
 	}
 	//Chat channel = this->_database.get_user(userSocketFD).get_channel(); // if check for duplicate -> implement
-	this->_database.set_user_name(userSocketFD, userName);
+	this->_database.set_user_nickName(userSocketFD, userName);
 	return (0);
 }
 

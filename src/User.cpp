@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:34:01 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/10/23 13:15:23 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/12/04 15:07:57 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ User::User(int socketFD) {
 	this->_socketFD = socketFD;
 	this->_verified = false;
 	this->_userName = std::string("User") + std::to_string(socketFD);
+	this->_nickName = this->_userName;
 	this->_currentChannel = "";
 	this->_ip = "";
 }
@@ -24,6 +25,7 @@ User::User(int socketFD, std::string ip) {
 	this->_socketFD = socketFD;
 	this->_verified = false;
 	this->_userName = std::string("User") + std::to_string(socketFD);
+	this->_nickName = this->_userName;
 	this->_currentChannel = "";
 	this->_ip = ip;
 }
@@ -32,10 +34,15 @@ std::string	User::get_user_name() {
 	return (this->_userName + (this->_verified ? "" : "*"));
 }
 
-int	User::set_user_name(std::string userName) {
-	this->_userName = userName;
+std::string User::get_user_nickName() {
+	return (this->_userName);
+}
+
+int	User::set_user_nickName(std::string nickName) {
+	this->_userName = nickName;
 	return (0);
 }
+
 
 void User::set_verified(bool verified) {
 	this->_verified = verified;
