@@ -6,7 +6,7 @@
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:51:11 by jonahkollne       #+#    #+#             */
-/*   Updated: 2024/01/01 22:06:38 by mreidenb         ###   ########.fr       */
+/*   Updated: 2024/01/01 22:52:31 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,22 +69,18 @@ int Commander::execute() {
 			ret_val = this->handle_user();
 		else if (this->_commandName == "PRIVMSG")
 			return (this->handle_privmsg());
-		//else if (this->_commandName == "/NOTICE")
 		else if (this->_commandName == "QUIT")
 			return (this->handle_quit());
 		else if (this->_commandName == "LIST")
 			return (this->handle_list());
-		//else if (this->_commandName == "/PART")
-		//else if (this->_commandName == "/TOPIC")
-		//else if (this->_commandName == "/MODE")
-		//else if (this->_commandName == "/WHO")
-		//else if (this->_commandName == "/WHOIS")
-		//else if (this->_commandName == "/INVITE")
-		//else if (this->_commandName == "/KICK")
-		//else if (this->_commandName == "/KILL")
-		//else if (this->_commandName == "/AWAY")
-		//else if (this->_commandName == "/OPER")
-		//else if (this->_commandName == "/SQUIT")
+		else if (this->_commandName == "MODE")
+			return (this->handle_mode());
+		else if (this->_commandName == "TOPIC")
+			return (this->handle_topic());
+		else if (this->_commandName == "INVITE")
+			return (this->handle_invite());
+		else if (this->_commandName == "KICK")
+			return (this->handle_kick());
 		else {
 			Executer(this->_database).send_user_message(this->_userSocket_FD, std::string("Unknown command\r\n"));
 			ret_val = -1; // "unknown" error code

@@ -6,7 +6,7 @@
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 09:57:30 by jkollner          #+#    #+#             */
-/*   Updated: 2024/01/01 20:29:34 by mreidenb         ###   ########.fr       */
+/*   Updated: 2024/01/01 22:46:26 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,15 @@ int	Database::delete_channel(std::string channelName) {
 int Database::remove_user_channel(int userSocket) {
 	// remove user from channel
 	std::string user_channel = this->_users.find(userSocket)->second.get_channel();
+	Chat chat = this->_chats.find(user_channel)->second;
 	if (user_channel != "") {
-		this->_chats.find(user_channel)->second.remove_user(userSocket);
+		chat.remove_user(userSocket);
 		this->_users.find(userSocket)->second.set_channel("");
+		if (chat.size() == 0)
+			this->_chats.erase(user_channel);
+		// If user is operator, remove operator status
+		if (chat._operators.find(userSocket) != chat._operators.end())
+			chat.remove_operator(userSocket);
 		return (0);
 	}
 	return (1);
@@ -55,6 +61,11 @@ int Database::create_channel(std::string channel_name) {
 	if (this->_chats.find(channel_name) != this->_chats.end())
 		return (1); // channel already exists
 	this->_chats.insert(std::make_pair(channel_name, Chat(channel_name)));
+	return (0);
+}
+
+int Database::set_channel_operator(int userSocket, std::string channelName) {
+	this->_chats.find(channelName)->second.set_operator(userSocket);
 	return (0);
 }
 
