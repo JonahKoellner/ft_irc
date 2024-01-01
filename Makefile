@@ -6,14 +6,14 @@
 #    By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/14 20:49:14 by mreidenb          #+#    #+#              #
-#    Updated: 2023/11/30 14:59:50 by mreidenb         ###   ########.fr        #
+#    Updated: 2023/12/14 00:08:00 by mreidenb         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = irc
 OBJS = $(addprefix .obj/, $(SRC_FILES:.cpp=.o)) .obj/main.o
 CXX = c++
-CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -I include
+CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -I include -fsanitize=address
 
 SRC_FILES = Server.cpp User.cpp Chat.cpp Executer.cpp Commander.cpp Commands.cpp ClientHandler.cpp Database.cpp
 SRCS = $(addprefix src/, $(SRC_FILES)) main.cpp

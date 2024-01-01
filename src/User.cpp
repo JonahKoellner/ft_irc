@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   User.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:34:01 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/12/04 15:07:57 by jkollner         ###   ########.fr       */
+/*   Updated: 2024/01/01 20:38:11 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,13 @@ std::string User::get_user_nickName() {
 
 int	User::set_user_nickName(std::string nickName) {
 	this->_userName = nickName;
+	return (0);
+}
+
+int User::set_user(std::string userName, std::string nickName, std::string realName) {
+	this->_userName = userName;
+	this->_nickName = nickName;
+	this->_realName = realName;
 	return (0);
 }
 

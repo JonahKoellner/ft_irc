@@ -6,7 +6,7 @@
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 10:07:19 by jkollner          #+#    #+#             */
-/*   Updated: 2023/11/27 21:53:31 by mreidenb         ###   ########.fr       */
+/*   Updated: 2024/01/01 19:41:05 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,17 @@ int	ClientHandler::handle_existing_client(std::vector<pollfd> &pollfds, int clie
 			it->second += std::string(buffer, bytesRead);
 		}
 		//if (std::string(buffer, bytesRead).find("\n") != std::string::npos) // netcat
-		if (std::string(buffer, bytesRead).find("\r\n") != std::string::npos || std::string(buffer, bytesRead).find("\n") != std::string::npos) // irssi client
-		{
-			std::cout << "Received: " << this->_clientData.find(clientSocketFD)->second << std::endl;
-			Commander(this->_clientData.find(clientSocketFD)->second, clientSocketFD, this->_database).execute();
-			this->_clientData.find(clientSocketFD)->second = std::string("");
+		if (bytesRead > 0) {
+			std::string data = this->_clientData.find(clientSocketFD)->second;
+			size_t pos = 0;
+			std::string token;
+			while ((pos = data.find("\r\n")) != std::string::npos) {
+				token = data.substr(0, pos);
+				std::cout << "Received: " << token << std::endl;
+				Commander(token, clientSocketFD, this->_database).execute();
+				data.erase(0, pos + 2);
+			}
+			this->_clientData.find(clientSocketFD)->second = data;
 		}
 	}
 	return (0);

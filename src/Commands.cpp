@@ -6,7 +6,7 @@
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 14:39:31 by mreidenb          #+#    #+#             */
-/*   Updated: 2023/12/04 15:45:11 by mreidenb         ###   ########.fr       */
+/*   Updated: 2024/01/01 20:43:56 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,12 @@ int	Commander::handle_privmsg() {
 
 int	Commander::handle_join() {
 	Executer ex(this->_database);
+	if (this->_commandArguments.size() < 1)
+		return (1);
+	if (this->_commandArguments[0] == ":")
+		return (ex.remove_user_channel(this->_userSocket_FD));
+	if (this->_commandArguments[0][0] != '#')
+		return (ex.send_user_message(this->_userSocket_FD, std::string("Invalid channel name\r\n")));
 	std::string name = ex.get_user(this->_userSocket_FD).get_user_name();
 	std::string chan = ex.get_user(this->_userSocket_FD).get_channel();
 	std::string message = name + " has joined " + this->_commandArguments[0] + "\r\n";
@@ -59,7 +65,7 @@ int	Commander::handle_leave() {
 	std::string chan = ex.get_user(this->_userSocket_FD).get_channel();
 	std::string message = name + " has left " + chan + "\r\n";
 	ex.send_message_chat(chan, message);
-	// return (ex.leave_channel(this->_userSocket_FD));
+	return (ex.remove_user_channel(this->_userSocket_FD));
 }
 
 int	Commander::handle_quit() {
@@ -90,4 +96,40 @@ int	Commander::handle_cap() {
 		return (1);
 	Executer ex(this->_database);
 	return (ex.set_channelName(this->_userSocket_FD, ex.get_user(this->_userSocket_FD).get_channel(), this->_commandArguments[0]));
+}
+
+int	Commander::handle_kick () {
+	Executer ex(this->_database);
+	if (this->_commandArguments.size() < 1)
+		return (1);
+	if (this->_commandArguments[0][0] != '#')
+		return (ex.send_user_message(this->_userSocket_FD, std::string("Invalid channel name\r\n")));
+	std::string chan = this->_commandArguments[0];
+	std::string name = this->_commandArguments[1];
+	std::string message = name + " has been kicked from " + chan + "\r\n";
+	ex.send_message_chat(chan, message);
+	return (ex.kick_user(this->_userSocket_FD, name, chan));
+}
+
+int Commander::handle_invite() {
+	Executer ex(this->_database);
+	if (this->_commandArguments.size() < 1)
+		return (1);
+	if (this->_commandArguments[0][0] != '#')
+		return (ex.send_user_message(this->_userSocket_FD, std::string("Invalid channel name\r\n")));
+	std::string chan = this->_commandArguments[0];
+	std::string targetName = this->_commandArguments[1];
+	std::string senderName = ex.get_user(this->_userSocket_FD).get_user_name();
+	std::string message = ":" + targetName + " INVITE " + senderName + " :" + chan + "\r\n";
+	return (ex.send_message_to_user(targetName, message));
+}
+
+int Commander::handle_user() {
+	Executer ex(this->_database);
+	if (this->_commandArguments.size() < 1)
+		return (1);
+	std::string userName = this->_commandArguments[0];
+	std::string nickName = this->_commandArguments[1];
+	std::string realName = (this->_commandArguments[3].substr(1)) + " " + (this->_commandArguments[4]);
+	return (ex.set_user_User(this->_userSocket_FD, userName, nickName, realName));
 }

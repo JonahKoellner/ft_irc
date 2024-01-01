@@ -6,7 +6,7 @@
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 15:50:02 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/12/04 14:55:09 by mreidenb         ###   ########.fr       */
+/*   Updated: 2023/12/06 16:18:41 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ class Chat {
 		int size();
 		std::string	get_name();
 		std::string	get_topic();
+		void		set_topic(std::string topic);
 		//std::vector<User>	get_users();
 
 		friend class Database;

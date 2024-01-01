@@ -6,7 +6,7 @@
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:58:20 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/12/04 15:40:24 by mreidenb         ###   ########.fr       */
+/*   Updated: 2023/12/06 14:19:46 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ class Commander{
 		int	handle_away();
 		int	handle_topic();
 		int	handle_ping();
+		int	handle_kick();
+		int	handle_invite();
 	public:
 		//Commander();
 		Commander(std::string commandString, int userSocket_FD, Database &database);
