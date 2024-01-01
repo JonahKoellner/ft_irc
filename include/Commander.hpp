@@ -6,7 +6,7 @@
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:58:20 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/12/06 14:19:46 by mreidenb         ###   ########.fr       */
+/*   Updated: 2024/01/01 22:06:17 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ class Commander{
 		std::vector<std::string> parse_command(std::string commandString);
 		int	handle_pass();
 		int	handle_user();
-		int	handle_cap();
 		int	handle_nick();
 		int	handle_privmsg();
 		int	handle_join();

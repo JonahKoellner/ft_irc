@@ -6,7 +6,7 @@
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 14:39:31 by mreidenb          #+#    #+#             */
-/*   Updated: 2024/01/01 21:51:36 by mreidenb         ###   ########.fr       */
+/*   Updated: 2024/01/01 22:06:49 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,14 +88,6 @@ int	Commander::handle_list() {
 int	Commander::handle_ping() {
 	Executer ex(this->_database);
 	return (ex.handle_ping(this->_userSocket_FD, this->_commandArguments[0]));
-}
-
-int	Commander::handle_cap() {
-	std::string message;
-	if (this->_commandArguments[0] != "LS")
-		return (1);
-	Executer ex(this->_database);
-	return (ex.set_channelName(this->_userSocket_FD, ex.get_user(this->_userSocket_FD).get_channel(), this->_commandArguments[0]));
 }
 
 int	Commander::handle_kick () {

@@ -6,7 +6,7 @@
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:51:11 by jonahkollne       #+#    #+#             */
-/*   Updated: 2024/01/01 20:45:06 by mreidenb         ###   ########.fr       */
+/*   Updated: 2024/01/01 22:06:38 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,18 +60,13 @@ int Commander::execute() {
 		return (this->handle_pass());
 	else if (this->_commandName == "PING")
 		return (this->handle_ping());
-	if (this->_commandName == "CAP")
-		return (this->handle_cap());
-	else if (Executer(this->_database).get_user(this->_userSocket_FD).get_verification()) {
+	if (Executer(this->_database).get_user(this->_userSocket_FD).get_verification()) {
 		if (this->_commandName == "JOIN")
 			return (this->handle_join());
 		else if (this->_commandName == "NICK")
 			ret_val = this->handle_nick();
 		else if (this->_commandName == "USER")
 			ret_val = this->handle_user();
-		//else if (this->_commandName == "/PASS")
-		
-		//else if (this->_commandName == "/PONG")
 		else if (this->_commandName == "PRIVMSG")
 			return (this->handle_privmsg());
 		//else if (this->_commandName == "/NOTICE")

@@ -6,7 +6,7 @@
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 10:07:19 by jkollner          #+#    #+#             */
-/*   Updated: 2024/01/01 19:41:05 by mreidenb         ###   ########.fr       */
+/*   Updated: 2024/01/01 22:06:27 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,21 +35,6 @@ int	ClientHandler::handle_new_connection(std::vector<pollfd> &pollfds) {
 
 
 		std::cout << "New connection established. (" << ip << ":" << std::to_string(port) << ")" << std::endl;
-		// //std::string response(":server-name CAP your-nick ACK :NICK JOIN PRIVMSG ME PASS\r\n");
-
-		// std::string server_info_response = "";
-		// std::string client_nick_name = "User" + std::to_string(newSocket);
-		// server_info_response += ":irc.majo.42 001 " + client_nick_name + " :Welcome to the Internet Relay Network of majo@42\r\n";
-		// server_info_response += ":irc.majo.42 002 " + client_nick_name + " :Your host is irc.majo.42, running version 1.0\r\n";
-		// server_info_response += ":irc.majo.42 004 " + client_nick_name + " irc.majo.42 1.0 a\r\n";
-		// server_info_response += ":irc.majo.42 005 " + client_nick_name + " MODES=a, CHANLIMIT=:50, PREFIX=(ov)@+\r\n";
-
-		// //std::string response(":irc.majo.42 001 User" + std::to_string(newSocket) + " :Welcome to the Internet Relay Network User" + std::to_string(newSocket) + "\r\n");
-		// if (send(newSocket, server_info_response.c_str(), server_info_response.size(), 0) < 0)
-		// 	return (std::cout << "Error sending CAP LS response" << std::endl, 1);
-
-
-
 		Executer(this->_database).create_user(newSocket, ip + ":" + std::to_string(port));
 		pollfds.push_back((pollfd){newSocket, POLLIN, 0});
 	}
