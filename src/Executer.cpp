@@ -6,7 +6,7 @@
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:51:25 by jonahkollne       #+#    #+#             */
-/*   Updated: 2024/01/01 21:54:14 by mreidenb         ###   ########.fr       */
+/*   Updated: 2024/01/01 22:26:44 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,8 @@ int	Executer::send_user_message(int	userSocketFD, std::string message) {
 }
 
 int	Executer::join_channel(int userSocket_FD, std::string channel_name) {
-	this->_database.create_channel(channel_name);
+	if (this->_database.create_channel(channel_name))
+		this->_database.set_channel_operator(userSocket_FD, channel_name);
 	this->_database.add_user_channel(userSocket_FD, channel_name);
 	send_message_chat(channel_name, "User" + std::to_string(userSocket_FD) + " has joined the chat.\r\n");
 	return (0);

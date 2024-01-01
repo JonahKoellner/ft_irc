@@ -6,7 +6,7 @@
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 09:46:18 by jkollner          #+#    #+#             */
-/*   Updated: 2024/01/01 20:29:23 by mreidenb         ###   ########.fr       */
+/*   Updated: 2024/01/01 22:29:01 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ class Database {
 		int	delete_user(int userSocket);
 		int	delete_channel(std::string channelName);
 		int	set_channel_name(std::string oldChannelName, std::string newChannelName);
+		int set_channel_operator(int userSocketFD, std::string channelName);
 		int	set_user_nickName(int userSocketFD, std::string nickName);
 		int	set_user_User(int userSocketFD, std::string userName, std::string nickName, std::string realName);
 		User	get_user(int userSocketFD);

@@ -6,7 +6,7 @@
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:58:20 by jonahkollne       #+#    #+#             */
-/*   Updated: 2024/01/01 22:06:17 by mreidenb         ###   ########.fr       */
+/*   Updated: 2024/01/01 22:14:05 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,11 @@ class Commander{
 		int	handle_names();
 		int	handle_quit();
 		int	handle_away();
-		int	handle_topic();
 		int	handle_ping();
+
+		//Channel Commands
+		int	handle_mode();
+		int	handle_topic();
 		int	handle_kick();
 		int	handle_invite();
 	public:

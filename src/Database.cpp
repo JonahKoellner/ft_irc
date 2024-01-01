@@ -6,7 +6,7 @@
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 09:57:30 by jkollner          #+#    #+#             */
-/*   Updated: 2024/01/01 20:29:34 by mreidenb         ###   ########.fr       */
+/*   Updated: 2024/01/01 22:28:26 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,11 @@ int Database::create_channel(std::string channel_name) {
 	if (this->_chats.find(channel_name) != this->_chats.end())
 		return (1); // channel already exists
 	this->_chats.insert(std::make_pair(channel_name, Chat(channel_name)));
+	return (0);
+}
+
+int Database::set_channel_operator(int userSocket, std::string channelName) {
+	this->_chats.find(channelName)->second.set_operator(userSocket);
 	return (0);
 }
 

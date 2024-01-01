@@ -6,7 +6,7 @@
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:22:10 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/12/04 14:55:16 by mreidenb         ###   ########.fr       */
+/*   Updated: 2024/01/01 22:30:29 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,18 @@ std::string Chat::get_name() {
 
 void Chat::set_name(std::string name) {
 	this->_name = name;
+}
+
+void Chat::set_topic(std::string topic) {
+	this->_topic = topic;
+}
+
+void Chat::set_operator(int socketFD) {
+	this->_operators.insert(std::make_pair(socketFD, this->_operators.size()));
+}
+
+void Chat::remove_operator(int socketFD) {
+	this->_operators.erase(socketFD);
 }
 
 //std::vector<User> Chat::get_users() {
