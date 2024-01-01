@@ -6,11 +6,13 @@
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:51:25 by jonahkollne       #+#    #+#             */
-/*   Updated: 2024/01/01 20:32:22 by mreidenb         ###   ########.fr       */
+/*   Updated: 2024/01/01 21:54:14 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Executer.hpp"
+
+const std::string Executer::SERVER_NAME = "irc.majo.42";
 
 Executer::Executer(Database &database) : _database(database){
 	_blackListedNames.insert("server");
@@ -28,6 +30,15 @@ int Executer::send_message_user_chat(int userSocketFD, std::string message, std:
 				return (1);
 		}
 	}
+	return (0);
+}
+
+int Executer::send_server_message(int userSocketFD, std::string message, std::string code) {
+	std::string userNick = this->_database.get_user(userSocketFD).get_user_nickName();
+	std::string irc_message = ":" + this->SERVER_NAME + " " + code + " " + userNick + " :" + message;
+	std::unordered_map<int, int> users = this->_database.get_channel_user(userNick); // Assuming you want to get users from a specific channel
+	if (send_user_message(userSocketFD, irc_message))
+			return (1);
 	return (0);
 }
 

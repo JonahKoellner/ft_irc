@@ -6,7 +6,7 @@
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 14:39:31 by mreidenb          #+#    #+#             */
-/*   Updated: 2024/01/01 20:43:56 by mreidenb         ###   ########.fr       */
+/*   Updated: 2024/01/01 21:51:36 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,5 +131,7 @@ int Commander::handle_user() {
 	std::string userName = this->_commandArguments[0];
 	std::string nickName = this->_commandArguments[1];
 	std::string realName = (this->_commandArguments[3].substr(1)) + " " + (this->_commandArguments[4]);
-	return (ex.set_user_User(this->_userSocket_FD, userName, nickName, realName));
+	if (!ex.set_user_User(this->_userSocket_FD, userName, nickName, realName))
+		return (ex.send_server_message(this->_userSocket_FD, "Welcome to the Internet Relay Network " + userName + "\r\n", "001"));
+	return ex.send_server_message(this->_userSocket_FD, "You may not reregister\r\n", "462");
 }

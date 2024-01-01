@@ -6,7 +6,7 @@
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 15:45:31 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/11/27 17:10:04 by mreidenb         ###   ########.fr       */
+/*   Updated: 2024/01/01 21:12:15 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,4 +14,3 @@
 
 #include <iostream>
 #include "Server.hpp"
-

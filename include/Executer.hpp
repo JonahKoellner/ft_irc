@@ -6,7 +6,7 @@
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 16:13:03 by jonahkollne       #+#    #+#             */
-/*   Updated: 2024/01/01 20:33:02 by mreidenb         ###   ########.fr       */
+/*   Updated: 2024/01/01 21:52:46 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@
 #include "Chat.hpp"
 #include "Database.hpp"
 
+
 class Executer{
+	static const std::string SERVER_NAME;
 	private:
 		Database &_database;
 		std::unordered_set<std::string> _blackListedNames;
@@ -27,9 +29,9 @@ class Executer{
 		int	send_message_chat(std::string channelName, std::string message);
 		int send_message_user_chat(int userSocket_FD, std::string message);
 		int	set_user_nickName(int userSocket_FD, std::string userName);
-		// int send_message_user_chat(int userSocket_FD, std::string message);
 		int	send_message_user_chat(int userSocketFD, std::string message, std::string channelName);
 		int	send_message_to_user(std::string userName, std::string message);
+		int send_server_message(int userSocketFD, std::string message, std::string code);
 		int	set_userName(int userSocket_FD, std::string userName);
 		int set_user_User(int userSocket_FD, std::string userName, std::string nickName, std::string realName);
 		int	set_user_verified(int userSocketFD, bool verified);
