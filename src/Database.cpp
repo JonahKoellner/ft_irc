@@ -6,7 +6,7 @@
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 09:57:30 by jkollner          #+#    #+#             */
-/*   Updated: 2024/01/01 22:42:23 by mreidenb         ###   ########.fr       */
+/*   Updated: 2024/01/01 22:46:26 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int Database::remove_user_channel(int userSocket) {
 		this->_users.find(userSocket)->second.set_channel("");
 		if (chat.size() == 0)
 			this->_chats.erase(user_channel);
+		// If user is operator, remove operator status
 		if (chat._operators.find(userSocket) != chat._operators.end())
 			chat.remove_operator(userSocket);
 		return (0);
