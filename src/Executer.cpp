@@ -6,7 +6,7 @@
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:51:25 by jonahkollne       #+#    #+#             */
-/*   Updated: 2024/01/02 15:12:47 by mreidenb         ###   ########.fr       */
+/*   Updated: 2024/01/02 15:31:28 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int Executer::send_private_message(int userSocketFD, std::string targetUserName,
 		send_user_message(userSocketFD, std::string("401 :No such nick/channel\r\n"));
 		return (1);
 	}
-	message = ":" + this->_database.get_user(userSocketFD).get_user_name() + " PRIVMSG " + targetUserName + " :" + message + "\r\n";
+	message = this->_database.get_user(userSocketFD).get_user_name() + " PRIVMSG " + targetUserName + " " + message + "\r\n";
 	return (send_user_message(targetFD, message));
 }
 
@@ -150,7 +150,7 @@ int	Executer::send_user_message(int	userSocketFD, std::string message) {
 		ssize_t bytes_sent = send(userSocketFD, message.c_str(), message.length(), 0);
 		if (bytes_sent < 0) {
 			std::cout << "Error sending message: " << strerror(errno) << std::endl;
-			return (1); 
+			return (1);
 		}
 		else if (bytes_sent != static_cast<ssize_t>(message.length())) {
 			std::cout << "Incomplete message sent" << std::endl;
@@ -217,8 +217,19 @@ int Executer::delete_user(int userSocket) {
 	return (0);
 }
 
+int Executer::remove_user_channel(int userSocket, std::string userChannel) {
+	this->_database.remove_user_channel(userSocket, userChannel);
+	return (0);
+}
+
 int Executer::remove_user_channel(int userSocket) {
-	this->_database.remove_user_channel(userSocket);
+	User user = this->_database.get_user(userSocket);
+	if (user.get_socket_fd() == -1)
+		return (-1);
+	std::vector<std::string> joined_channels = user.get_joined_channel();
+	for (int i = 0; i < static_cast<int>(joined_channels.size()); i++) {
+		this->_database.remove_user_channel(userSocket, joined_channels[i]);
+	}
 	return (0);
 }
 
@@ -253,6 +264,6 @@ int	Executer::kick_user(int userSocketFD, std::string targetUserName, std::strin
 		return (1);
 	}
 	send_user_message(targetFD, std::string("You have been kicked from the channel\r\n"));
-	remove_user_channel(targetFD);
+	remove_user_channel(targetFD, targetUser.get_user_name());
 	return (0);
 }

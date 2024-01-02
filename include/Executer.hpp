@@ -6,7 +6,7 @@
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 16:13:03 by jonahkollne       #+#    #+#             */
-/*   Updated: 2024/01/02 15:08:35 by mreidenb         ###   ########.fr       */
+/*   Updated: 2024/01/02 15:32:14 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ class Executer{
 		int	delete_channel(std::string channelName);
 		User	get_user(int userSocket_FD);
 		bool	check_password(std::string);
+		int	remove_user_channel(int userSocket, std::string userChannel);
 		int	remove_user_channel(int userSocket);
 		int send_private_message(int userSocketFD, std::string targetUserName, std::string message);
 		int list_user_channel(int userSocketFD);

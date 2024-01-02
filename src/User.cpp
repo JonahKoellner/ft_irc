@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:34:01 by jonahkollne       #+#    #+#             */
-/*   Updated: 2024/01/02 10:55:51 by jkollner         ###   ########.fr       */
+/*   Updated: 2024/01/02 13:08:33 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,10 @@ int User::join_channel(std::string channelName) {
 
 std::string User::get_channel() {
 	return (this->_currentChannel);
+}
+
+std::vector<std::string> User::get_joined_channel() {
+	return (this->_joinedChannel);
 }
 
 bool User::operator==(User user) {
