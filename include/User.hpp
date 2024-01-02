@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 15:56:20 by jonahkollne       #+#    #+#             */
-/*   Updated: 2024/01/02 10:54:09 by jkollner         ###   ########.fr       */
+/*   Updated: 2024/01/02 13:19:46 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ class User{
 		bool	get_verification();
 		int		get_socket_fd();
 		std::string get_channel();
+		std::vector<std::string> get_joined_channel();
 		bool operator==(User user);
 		~User() {};
 
