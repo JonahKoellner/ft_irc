@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 15:56:20 by jonahkollne       #+#    #+#             */
-/*   Updated: 2024/01/02 10:48:33 by jkollner         ###   ########.fr       */
+/*   Updated: 2024/01/02 10:54:09 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ class User{
 		std::string _realName;
 		std::string _ip;
 		bool	_verified;
-		//std::string	_currentChannel;
+		std::string	_currentChannel;
 		std::vector<std::string> _joinedChannel;
-		//void	set_channel(std::string channelName);
+		void	set_channel(std::string channelName);
 		int		join_channel(std::string channelName);
 		int		set_user_nickName(std::string nickName);
 		int		set_user(std::string userName, std::string nickName, std::string realName);

@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:34:01 by jonahkollne       #+#    #+#             */
-/*   Updated: 2024/01/02 10:48:16 by jkollner         ###   ########.fr       */
+/*   Updated: 2024/01/02 10:55:51 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,13 @@ int User::get_socket_fd() {
 	return (this->_socketFD);
 }
 
-//void User::set_channel(std::string channelName) {
-	//this->_currentChannel = channelName;
-//}
+void User::set_channel(std::string channelName) {
+	this->_currentChannel = channelName;
+}
 
 int User::join_channel(std::string channelName) {
 	this->_joinedChannel.push_back(channelName); // add the channel to joined channels =
+	return (0);
 }
 
 std::string User::get_channel() {
