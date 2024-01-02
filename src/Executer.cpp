@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:51:25 by jonahkollne       #+#    #+#             */
-/*   Updated: 2024/01/02 13:22:07 by jkollner         ###   ########.fr       */
+/*   Updated: 2024/01/02 17:01:53 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ int Executer::set_userName(int userSocketFD, std::string userName) {
 		send_user_message(userSocketFD, std::string("Username is blacklisted\r\n"));
 		return (1);
 	}
+
 	this->_database.set_user_nickName(userSocketFD, userName);
 	return (0);
 }
@@ -176,6 +177,13 @@ int	Executer::set_user_nickName(int userSocketFD, std::string userName) {
 	if (_blackListedNames.find(userName) != _blackListedNames.end()) {
 		send_user_message(userSocketFD, std::string("Username is blacklisted\r\n"));
 		return (1);
+	}
+	std::unordered_map<int, User> users = this->_database.get_all_users();
+	for (int i = 0; i < static_cast<int>(users.size()); i++) {
+		if (users.find(i)->second.get_user_nickName() == userName) {
+			send_user_message(userSocketFD, std::string("Username already exists\r\n"));
+			return (1);
+		}
 	}
 	//Chat channel = this->_database.get_user(userSocketFD).get_channel(); // if check for duplicate -> implement
 	this->_database.set_user_nickName(userSocketFD, userName);

@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 09:57:30 by jkollner          #+#    #+#             */
-/*   Updated: 2024/01/02 13:22:34 by jkollner         ###   ########.fr       */
+/*   Updated: 2024/01/02 17:00:30 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,10 @@ Chat Database::get_channel(std::string channelName) {
 
 std::unordered_map<std::string, Chat> Database::get_all_channel( void ) {
 	return (this->_chats);
+}
+
+std::unordered_map<int, User> Database::get_all_users( void ) {
+	return (this->_users);
 }
 
 Database::~Database() {

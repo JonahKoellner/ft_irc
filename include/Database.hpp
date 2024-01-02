@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 09:46:18 by jkollner          #+#    #+#             */
-/*   Updated: 2024/01/02 13:07:19 by jkollner         ###   ########.fr       */
+/*   Updated: 2024/01/02 16:51:48 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ class Database {
 		int get_user_fd(std::string userName);
 		Chat get_channel(std::string channelName);
 		std::unordered_map<std::string, Chat> get_all_channel( void );
-
+		std::unordered_map<int, User> get_all_users( void );
 	public:
 		Database(std::string password);
 		~Database();
