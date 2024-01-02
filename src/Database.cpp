@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 09:57:30 by jkollner          #+#    #+#             */
-/*   Updated: 2023/12/04 15:09:30 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/12/04 15:19:19 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,9 @@ int Database::remove_user_channel(int userSocket) {
 	std::string user_channel = this->_users.find(userSocket)->second.get_channel();
 	if (user_channel != "") {
 		this->_chats.find(user_channel)->second.remove_user(userSocket);
-		this->_users.find(userSocket)->second.set_channel("");
+		//this->_users.find(userSocket)->second.set_channel("");
+		this->_users.find(userSocket)->second.leave_channel(user_channel);
+
 		return (0);
 	}
 	return (1);

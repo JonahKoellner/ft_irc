@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:34:01 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/12/04 15:07:57 by jkollner         ###   ########.fr       */
+/*   Updated: 2023/12/04 15:15:03 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ User::User(int socketFD) {
 	this->_verified = false;
 	this->_userName = std::string("User") + std::to_string(socketFD);
 	this->_nickName = this->_userName;
-	this->_currentChannel = "";
+	//this->_currentChannel = "";
 	this->_ip = "";
 }
 
@@ -26,7 +26,7 @@ User::User(int socketFD, std::string ip) {
 	this->_verified = false;
 	this->_userName = std::string("User") + std::to_string(socketFD);
 	this->_nickName = this->_userName;
-	this->_currentChannel = "";
+	//this->_currentChannel = "";
 	this->_ip = ip;
 }
 
@@ -43,7 +43,6 @@ int	User::set_user_nickName(std::string nickName) {
 	return (0);
 }
 
-
 void User::set_verified(bool verified) {
 	this->_verified = verified;
 }
@@ -56,8 +55,12 @@ int User::get_socket_fd() {
 	return (this->_socketFD);
 }
 
-void User::set_channel(std::string channelName) {
-	this->_currentChannel = channelName;
+//void User::set_channel(std::string channelName) {
+	//this->_currentChannel = channelName;
+//}
+
+int User::join_channel(std::string channelName) {
+	this->_joinedChannel.push_back(channelName); // add the channel to joined channels =
 }
 
 std::string User::get_channel() {
