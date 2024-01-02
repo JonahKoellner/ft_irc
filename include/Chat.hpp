@@ -6,7 +6,7 @@
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 15:50:02 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/11/14 20:55:27 by mreidenb         ###   ########.fr       */
+/*   Updated: 2024/01/01 22:30:35 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@
 class Chat {
 	private:
 		std::unordered_map<int, int> _users; // <socketFD, channel_id>
+		std::unordered_map<int, int> _operators; // <socketFD, channel_id>
 		std::string			_name;
+		std::string			_topic;
 		//std::unordered_map<std::string, Bot> _bots;
 		void				set_name(std::string name);
 		int					add_user(User user);
@@ -37,6 +39,10 @@ class Chat {
 		~Chat();
 		int size();
 		std::string	get_name();
+		std::string	get_topic();
+		void		set_topic(std::string topic);
+		void		set_operator(int socketFD);
+		void		remove_operator(int socketFD);
 		//std::vector<User>	get_users();
 
 		friend class Database;

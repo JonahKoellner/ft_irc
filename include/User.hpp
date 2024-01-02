@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 15:56:20 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/12/04 15:14:56 by jkollner         ###   ########.fr       */
+/*   Updated: 2024/01/02 10:48:33 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ class User{
 		int	_socketFD;
 		std::string _userName;
 		std::string _nickName;
+		std::string _realName;
 		std::string _ip;
 		bool	_verified;
 		//std::string	_currentChannel;
@@ -26,6 +27,7 @@ class User{
 		//void	set_channel(std::string channelName);
 		int		join_channel(std::string channelName);
 		int		set_user_nickName(std::string nickName);
+		int		set_user(std::string userName, std::string nickName, std::string realName);
 		void	set_verified(bool verified);
 
 	public:

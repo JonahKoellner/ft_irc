@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:34:01 by jonahkollne       #+#    #+#             */
-/*   Updated: 2023/12/04 15:15:03 by jkollner         ###   ########.fr       */
+/*   Updated: 2024/01/02 10:48:16 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,14 @@ int	User::set_user_nickName(std::string nickName) {
 	this->_userName = nickName;
 	return (0);
 }
+
+int User::set_user(std::string userName, std::string nickName, std::string realName) {
+	this->_userName = userName;
+	this->_nickName = nickName;
+	this->_realName = realName;
+	return (0);
+}
+
 
 void User::set_verified(bool verified) {
 	this->_verified = verified;

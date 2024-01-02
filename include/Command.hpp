@@ -1,16 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.hpp                                           :+:      :+:    :+:   */
+/*   Command.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/06 15:45:31 by jonahkollne       #+#    #+#             */
-/*   Updated: 2024/01/01 21:12:15 by mreidenb         ###   ########.fr       */
+/*   Created: 2023/11/28 17:20:08 by mreidenb          #+#    #+#             */
+/*   Updated: 2023/11/28 17:56:44 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include <iostream>
-#include "Server.hpp"
+#include <string>
+#include <vector>
+
+class Command{
+	private:
+		std::string _commandName;
+		std::vector<std::string> _commandArguments;
+	public:
+		Command(std::string commandName, std::vector<std::string> commandArguments);
+		std::string get_commandName();
+		std::vector<std::string> get_commandArguments();
+};
