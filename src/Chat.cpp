@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Chat.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:22:10 by jonahkollne       #+#    #+#             */
-/*   Updated: 2024/01/01 22:30:29 by mreidenb         ###   ########.fr       */
+/*   Updated: 2024/01/02 14:36:29 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void Chat::remove_operator(int socketFD) {
 
 //std::vector<User> Chat::get_users() {
 //	return (this->_users);
-//}                                          
+//}
 
 int Chat::add_user(User user) {
 	int userSocket = user.get_socket_fd();
@@ -55,8 +55,18 @@ std::unordered_map<int, int> Chat::get_users() {
 	return (this->_users);
 }
 
+/**
+ * Returns 1 if the user wasnt found or there was an error while removing
+ * Returns -1 if the user was removed && the channel is now empty
+ * Returns 0 if the user was removed
+*/
 int	Chat::remove_user(int userSocket) {
-	return (this->_users.erase(userSocket) > 0 ? 1 : 0);
+	if (this->_users.erase(userSocket) > 0) // if there is an error in removing, dont delete channel
+		return (1);
+	if (this->_users.size() == 0) // if the channel is empty after deleting user, delete channel
+		return (-1);
+	return (0);
+	//return (this->_users.erase(userSocket) > 0 ? 1 : 0);
 }
 
 int Chat::size() {

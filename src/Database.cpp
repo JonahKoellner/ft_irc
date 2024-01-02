@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 09:57:30 by jkollner          #+#    #+#             */
-/*   Updated: 2024/01/02 13:22:34 by jkollner         ###   ########.fr       */
+/*   Updated: 2024/01/02 14:39:26 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@ int Database::remove_user_channel(int userSocket, std::string userChannel) {
 	//for (auto i : this->_chats)
 		//std::cout << i.first << std::endl;
 
-	Chat chat = this->_chats.find(userChannel)->second; //// BUGUGUGUGUGUGUGUGU!!!!!!! ! ! ! TODO
+	Chat chat = this->_chats.find(userChannel)->second;
 	if (userChannel != "") {
-		chat.remove_user(userSocket);
+		if (chat.remove_user(userSocket) == -1)
+			this->_chats.erase(userChannel); // delete the channel when it empties
 		this->_users.find(userSocket)->second.set_channel("");
-		std::cout << " setting channel" << std::endl;
 		if (chat.size() == 0)
 			this->_chats.erase(userChannel);
 		// If user is operator, remove operator status
