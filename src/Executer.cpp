@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:51:25 by jonahkollne       #+#    #+#             */
-/*   Updated: 2024/01/02 17:03:26 by jkollner         ###   ########.fr       */
+/*   Updated: 2024/01/02 17:59:14 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,19 +119,20 @@ int Executer::send_private_message(int userSocketFD, std::string targetUserName,
 	return (send_user_message(targetFD, message));
 }
 
-int Executer::list_user_channel(int userSocketFD) {
-	User user = this->_database.get_user(userSocketFD);
-	if (user.get_socket_fd() == -1)
-		return (-1);
-	std::unordered_map<int, int> users = this->_database.get_channel_user(user.get_channel());
-	std::string list_message = "";
-	list_message += ("Users in channel '" + user.get_channel() + "':\n");
-	for (std::unordered_map<int, int>::iterator it = users.begin(); it != users.end(); it++) {
-		list_message+= ("\t-'" + this->_database.get_user(it->first).get_user_name() + "'\n");
-	}
-	send_user_message(userSocketFD, (list_message + "\r\n"));
-	return (0);
-}
+//int Executer::list_user_channel(int userSocketFD) {
+//	User user = this->_database.get_user(userSocketFD);
+//	if (user.get_socket_fd() == -1)
+//		return (-1);
+
+//	std::unordered_map<int, int> users = this->_database.get_channel_user(user.get_channel());
+//	std::string list_message = "";
+//	list_message += ("Users in channel '" + user.get_channel() + "':\n");
+//	for (std::unordered_map<int, int>::iterator it = users.begin(); it != users.end(); it++) {
+//		list_message+= ("\t-'" + this->_database.get_user(it->first).get_user_name() + "'\n");
+//	}
+//	send_user_message(userSocketFD, (list_message + "\r\n"));
+//	return (0);
+//}
 
 int	Executer::send_user_message(int	userSocketFD, std::string message) {
 	struct pollfd pfd = {userSocketFD, POLLOUT, 0 };
@@ -179,11 +180,26 @@ int	Executer::set_user_nickName(int userSocketFD, std::string userName) {
 		return (1);
 	}
 	std::unordered_map<int, User> users = this->_database.get_all_users();
-	for (int i = 0; i < static_cast<int>(users.size()); i++) {
-		if (users.find(i)->second.get_user_nickName() == userName) {
-			send_user_message(userSocketFD, std::string("Username already exists\r\n"));
-			return (1);
+	if (!users.empty()) {
+		std::cout << "users not empty" << std::endl;
+		for (std::unordered_map<int, User>::iterator it = users.begin(); it != users.end(); it++) {
+			std::cout << "checking: " << it->second.get_user_nickName() << " " << it->second.get_socket_fd() << std::endl;
+			if (it->second.get_user_nickName() == userName && it->second.get_socket_fd() != userSocketFD) {
+				send_user_message(userSocketFD, std::string("Username already exists\r\n"));
+				return (1);
+			}
 		}
+
+		//for (int i = 0; i < static_cast<int>(users.size()); i++) {
+		//	if (users.find(i)->second.get_user_nickName() == userName) {
+		//		send_user_message(userSocketFD, std::string("Username already exists\r\n"));
+		//		return (1);
+		//	}
+		//	if (users.find(i)->second.get_user_nickName() == userName) {
+		//		send_user_message(userSocketFD, std::string("Username already exists\r\n"));
+		//		return (1);
+		//	}
+		//}
 	}
 	//Chat channel = this->_database.get_user(userSocketFD).get_channel(); // if check for duplicate -> implement
 	this->_database.set_user_nickName(userSocketFD, userName);
@@ -256,15 +272,27 @@ int Executer::handle_ping(int userSocketFD, const std::string &message) {
 }
 
 int	Executer::kick_user(int userSocketFD, std::string targetUserName, std::string channelName) {
+	std::unordered_map<std::string, Chat> channels = this->_database.get_all_channel();
+
+	if (channels.find(channelName) == channels.end()) {
+		send_user_message(userSocketFD, std::string("Channel does not exist\r\n"));
+		return (1);
+	}
+	Chat channel = channels.find(channelName)->second;
+
+	//if (channel._operators.find(userSocketFD) == channel._operators.end()) {
+	//	send_user_message(userSocketFD, std::string("You are not an operator\r\n"));
+	//	return (1);
+	//}
+
+	this->_database.remove_user_channel(this->_database.get_user_fd(targetUserName), channelName);
+
+
+
 	int targetFD = this->_database.get_user_fd(targetUserName);
 	User targetUser = this->_database.get_user(targetFD);
 
 	if (targetFD == -1 || targetUser.get_socket_fd() == -1) {
-		send_user_message(userSocketFD, std::string("User is not in the same channel\r\n"));
-		return (1);
-	}
-	channelName = this->_database.get_user(userSocketFD).get_channel();
-	if (channelName == "" || channelName != this->_database.get_user(userSocketFD).get_channel()) {
 		send_user_message(userSocketFD, std::string("User is not in the same channel\r\n"));
 		return (1);
 	}

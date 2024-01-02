@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 09:57:30 by jkollner          #+#    #+#             */
-/*   Updated: 2024/01/02 17:00:30 by jkollner         ###   ########.fr       */
+/*   Updated: 2024/01/02 17:56:10 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,9 @@ int Database::remove_user_channel(int userSocket, std::string userChannel) {
 	//for (auto i : this->_chats)
 		//std::cout << i.first << std::endl;
 
-	Chat chat = this->_chats.find(userChannel)->second; //// BUGUGUGUGUGUGUGUGU!!!!!!! ! ! ! TODO
+	Chat chat = this->_chats.find(userChannel)->second;
 	if (userChannel != "") {
 		chat.remove_user(userSocket);
-		this->_users.find(userSocket)->second.set_channel("");
-		std::cout << " setting channel" << std::endl;
 		if (chat.size() == 0)
 			this->_chats.erase(userChannel);
 		// If user is operator, remove operator status
@@ -74,6 +72,8 @@ int Database::set_channel_operator(int userSocket, std::string channelName) {
 	return (0);
 }
 
+
+
 int Database::set_user_verification(bool verified, int userSocket) {
 	this->_users.find(userSocket)->second.set_verified(verified);
 	return (0);
@@ -81,7 +81,7 @@ int Database::set_user_verification(bool verified, int userSocket) {
 
 int Database::add_user_channel(int userSocketFD, std::string channelName) {
 	this->_chats.find(channelName)->second.add_user(this->_users.find(userSocketFD)->second);
-	this->_users.find(userSocketFD)->second.set_channel(channelName);
+	this->_users.find(userSocketFD)->second.join_channel(channelName);
 	return (0);
 }
 

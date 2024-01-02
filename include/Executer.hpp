@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 16:13:03 by jonahkollne       #+#    #+#             */
-/*   Updated: 2024/01/02 13:15:36 by jkollner         ###   ########.fr       */
+/*   Updated: 2024/01/02 17:12:13 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "Chat.hpp"
 #include "Database.hpp"
 
-
+ 
 class Executer{
 	static const std::string SERVER_NAME;
 	private:
@@ -55,7 +55,7 @@ class Executer{
 		int handle_dcc_accept(int userSocketFD, std::string targetUserName, std::string fileName, std::string ip, std::string port);
 		int handle_dcc_decline(int userSocketFD, std::string targetUserName, std::string fileName, std::string ip, std::string port);
 		int handle_dcc_cancel(int userSocketFD, std::string targetUserName, std::string fileName, std::string ip, std::string port);
-		
+
 	public:
 		Executer(Database &database);
 

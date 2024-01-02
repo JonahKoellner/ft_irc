@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 14:39:31 by mreidenb          #+#    #+#             */
-/*   Updated: 2024/01/02 13:50:46 by mreidenb         ###   ########.fr       */
+/*   Updated: 2024/01/02 17:22:41 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	Commander::handle_nick() {
 	std::string name = ex.get_user(this->_userSocket_FD).get_user_name();
 	std::string chan = ex.get_user(this->_userSocket_FD).get_channel();
 	ex.send_message_chat(chan, std::string(name + " --> " + this->_commandArguments[0] + "\r\n"));
-	return (ex.set_userName(this->_userSocket_FD, this->_commandArguments[0]));
+	return (ex.set_user_nickName(this->_userSocket_FD, this->_commandArguments[0]));
 }
 
 int	Commander::handle_privmsg() {
