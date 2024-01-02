@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Executer.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 16:13:03 by jonahkollne       #+#    #+#             */
-/*   Updated: 2024/01/01 21:52:46 by mreidenb         ###   ########.fr       */
+/*   Updated: 2024/01/02 13:15:36 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ class Executer{
 		int	delete_channel(std::string channelName);
 		User	get_user(int userSocket_FD);
 		bool	check_password(std::string);
+		int	remove_user_channel(int userSocket, std::string userChannel);
 		int	remove_user_channel(int userSocket);
 		int send_private_message(int userSocketFD, std::string targetUserName, std::string message);
 		int list_user_channel(int userSocketFD);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 14:39:31 by mreidenb          #+#    #+#             */
-/*   Updated: 2024/01/01 22:16:27 by mreidenb         ###   ########.fr       */
+/*   Updated: 2024/01/02 13:19:16 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,11 @@ int	Commander::handle_quit() {
 	Executer ex(this->_database);
 	std::string name = ex.get_user(this->_userSocket_FD).get_user_name();
 	std::string chan = ex.get_user(this->_userSocket_FD).get_channel();
+	std::vector<std::string> channels = ex.get_user(this->_userSocket_FD).get_joined_channel();
 	std::string message = name + " has quit\r\n";
 	ex.send_message_chat(chan, message);
 	ex.remove_user_channel(this->_userSocket_FD);
+	//ex.remove_user_channel(this->_userSocket_FD); /// BUG
 	//pollfds.erase(pollfds.begin() + i);
 	//close(this->_userSocket_FD); // TODO
 	return (ex.delete_user(this->_userSocket_FD));

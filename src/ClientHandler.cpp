@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ClientHandler.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 10:07:19 by jkollner          #+#    #+#             */
-/*   Updated: 2024/01/01 22:06:27 by mreidenb         ###   ########.fr       */
+/*   Updated: 2024/01/02 11:13:00 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	ClientHandler::handle_new_connection(std::vector<pollfd> &pollfds) {
 		std::string ip = inet_ntoa(((sockaddr_in*)&clientAddress)->sin_addr);
         int port = ntohs(((sockaddr_in*)&clientAddress)->sin_port);
 
-
 		std::cout << "New connection established. (" << ip << ":" << std::to_string(port) << ")" << std::endl;
 		Executer(this->_database).create_user(newSocket, ip + ":" + std::to_string(port));
 		pollfds.push_back((pollfd){newSocket, POLLIN, 0});
@@ -47,10 +46,10 @@ int	ClientHandler::handle_existing_client(std::vector<pollfd> &pollfds, int clie
 	int bytesRead = recv(clientSocketFD, buffer, sizeof(buffer), 0);
 	if (bytesRead <= 0) {
 		// Connection closed or error
-		Executer ex(this->_database);
-		ex.send_message_chat(ex.get_user(clientSocketFD).get_channel(), ex.get_user(clientSocketFD).get_user_name() + " has left the chat.\r\n");
-		ex.remove_user_channel(clientSocketFD);
-		ex.delete_user(clientSocketFD);
+		//Executer ex(this->_database);
+		//ex.send_message_chat(ex.get_user(clientSocketFD).get_channel(), ex.get_user(clientSocketFD).get_user_name() + " has left the chat.\r\n");
+		//ex.remove_user_channel(clientSocketFD);
+		//ex.delete_user(clientSocketFD);
 		pollfds.erase(pollfds.begin() + i);
 		close(clientSocketFD);
 	} else {

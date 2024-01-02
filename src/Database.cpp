@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 09:57:30 by jkollner          #+#    #+#             */
-/*   Updated: 2024/01/02 10:54:12 by jkollner         ###   ########.fr       */
+/*   Updated: 2024/01/02 13:22:34 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,20 @@ int	Database::delete_channel(std::string channelName) {
 	return (this->_chats.erase(channelName));
 }
 
-int Database::remove_user_channel(int userSocket) {
+int Database::remove_user_channel(int userSocket, std::string userChannel) {
 	// remove user from channel
-	std::string user_channel = this->_users.find(userSocket)->second.get_channel();
-	Chat chat = this->_chats.find(user_channel)->second;
-	if (user_channel != "") {
+	//std::string user_channel = this->_users.find(userSocket)->second.get_channel();
+
+	//for (auto i : this->_chats)
+		//std::cout << i.first << std::endl;
+
+	Chat chat = this->_chats.find(userChannel)->second; //// BUGUGUGUGUGUGUGUGU!!!!!!! ! ! ! TODO
+	if (userChannel != "") {
 		chat.remove_user(userSocket);
 		this->_users.find(userSocket)->second.set_channel("");
+		std::cout << " setting channel" << std::endl;
 		if (chat.size() == 0)
-			this->_chats.erase(user_channel);
+			this->_chats.erase(userChannel);
 		// If user is operator, remove operator status
 		if (chat._operators.find(userSocket) != chat._operators.end())
 			chat.remove_operator(userSocket);
