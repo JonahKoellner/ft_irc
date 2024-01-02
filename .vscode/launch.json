@@ -9,11 +9,11 @@
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/irc",
-			"args": ["4242", "bre"],
+			"args": ["4242", "pass"],
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
 			"environment": [],
-			"externalConsole": false,
+			"externalConsole": true,
 			"MIMode": "lldb",
 			"setupCommands": [
 				{
