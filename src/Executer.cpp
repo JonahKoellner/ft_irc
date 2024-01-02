@@ -6,7 +6,7 @@
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:51:25 by jonahkollne       #+#    #+#             */
-/*   Updated: 2024/01/01 22:26:44 by mreidenb         ###   ########.fr       */
+/*   Updated: 2024/01/02 15:12:47 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,9 @@ int Executer::send_private_message(int userSocketFD, std::string targetUserName,
 	int targetFD = this->_database.get_user_fd(targetUserName);
 	User targetUser = this->_database.get_user(targetFD);
 
+	if (message.find(":DCC SEND") != std::string::npos) {
+		return (handle_dcc_send(userSocketFD, targetUserName, message));
+	}
 	if (targetFD == -1 || targetUser.get_socket_fd() == -1) {
 		send_user_message(userSocketFD, std::string("401 :No such nick/channel\r\n"));
 		return (1);
