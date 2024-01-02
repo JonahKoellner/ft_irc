@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:51:25 by jonahkollne       #+#    #+#             */
-/*   Updated: 2024/01/02 17:01:53 by jkollner         ###   ########.fr       */
+/*   Updated: 2024/01/02 17:03:26 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ int Executer::send_private_message(int userSocketFD, std::string targetUserName,
 		send_user_message(userSocketFD, std::string("401 :No such nick/channel\r\n"));
 		return (1);
 	}
-	message = ":" + this->_database.get_user(userSocketFD).get_user_name() + " PRIVMSG " + targetUserName + " :" + message + "\r\n";
+	message = this->_database.get_user(userSocketFD).get_user_name() + " PRIVMSG " + targetUserName + " " + message + "\r\n";
 	return (send_user_message(targetFD, message));
 }
 

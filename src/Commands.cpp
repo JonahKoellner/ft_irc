@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 14:39:31 by mreidenb          #+#    #+#             */
-/*   Updated: 2024/01/02 13:19:16 by jkollner         ###   ########.fr       */
+/*   Updated: 2024/01/02 13:50:46 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,18 @@ int	Commander::handle_nick() {
 
 int	Commander::handle_privmsg() {
 	Executer ex(this->_database);
+	std::string message;
 	if (this->_commandArguments.size() < 2)
 		return (1);
 	if (this->_commandArguments[0][0] != '#')
-		return (ex.send_private_message(this->_userSocket_FD, this->_commandArguments[0], this->_commandArguments[1]));
+	{
+		for (size_t i = 1; i < this->_commandArguments.size(); i++)
+			message += this->_commandArguments[i] + " ";
+		return (ex.send_private_message(this->_userSocket_FD, this->_commandArguments[0], message));
+	}
 	std::string name = ex.get_user(this->_userSocket_FD).get_user_name();
 	std::string chan = ex.get_user(this->_userSocket_FD).get_channel();
-	std::string message = name + " --> " + this->_commandArguments[0] + ": " + this->_commandArguments[1] + "\r\n";
+	message = name + " --> " + this->_commandArguments[0] + ": " + this->_commandArguments[1] + "\r\n";
 	ex.send_message_chat(chan, message);
 	ex.send_private_message(this->_userSocket_FD, this->_commandArguments[0], message);
 	return (0);
