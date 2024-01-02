@@ -6,7 +6,7 @@
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 15:46:17 by jonahkollne       #+#    #+#             */
-/*   Updated: 2024/01/01 21:13:04 by mreidenb         ###   ########.fr       */
+/*   Updated: 2024/01/02 14:03:15 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,3 @@ class Server {
 		~Server();
 		int	start_server();
 };
-
