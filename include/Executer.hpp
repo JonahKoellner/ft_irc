@@ -6,7 +6,7 @@
 /*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 16:13:03 by jonahkollne       #+#    #+#             */
-/*   Updated: 2024/01/01 21:52:46 by mreidenb         ###   ########.fr       */
+/*   Updated: 2024/01/02 13:08:17 by mreidenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,13 @@ class Executer{
 		int	list_channel( int userSocketFD, std::string nickName );
 		int	handle_ping(int userSocketFD, const std::string &message);
 		int	kick_user(int userSocketFD, std::string targetUserName, std::string channelName);
+
+		//File transfer
+		int handle_dcc_send(int userSocketFD, std::string targetUserName, std::string fileName, std::string ip, std::string port);
+		int handle_dcc_accept(int userSocketFD, std::string targetUserName, std::string fileName, std::string ip, std::string port);
+		int handle_dcc_decline(int userSocketFD, std::string targetUserName, std::string fileName, std::string ip, std::string port);
+		int handle_dcc_cancel(int userSocketFD, std::string targetUserName, std::string fileName, std::string ip, std::string port);
+		
 	public:
 		Executer(Database &database);
 
