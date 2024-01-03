@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 10:07:19 by jkollner          #+#    #+#             */
-/*   Updated: 2024/01/02 11:13:00 by jkollner         ###   ########.fr       */
+/*   Updated: 2024/01/03 10:14:00 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	ClientHandler::handle_new_connection(std::vector<pollfd> &pollfds) {
 		perror("Error accepting connection");
 	} else {
 		std::string ip = inet_ntoa(((sockaddr_in*)&clientAddress)->sin_addr);
-        int port = ntohs(((sockaddr_in*)&clientAddress)->sin_port);
+		int port = ntohs(((sockaddr_in*)&clientAddress)->sin_port);
 
 		std::cout << "New connection established. (" << ip << ":" << std::to_string(port) << ")" << std::endl;
 		Executer(this->_database).create_user(newSocket, ip + ":" + std::to_string(port));

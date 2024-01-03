@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:51:25 by jonahkollne       #+#    #+#             */
-/*   Updated: 2024/01/02 17:59:14 by jkollner         ###   ########.fr       */
+/*   Updated: 2024/01/03 11:44:19 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,15 @@ int	Executer::send_message_chat(std::string channelName, std::string message) {
 	for (std::unordered_map<int, int>::iterator it = users.begin(); it != users.end(); it++) {
 			if (send_user_message(it->first, message))
 				return (1);
+	}
+	return (0);
+}
+
+int Executer::send_message_all_chat(int userSocketFD, std::string message) {
+	std::vector<std::string> joined_channels = get_user(userSocketFD).get_joined_channel();
+	for (int i = 0; i < static_cast<int>(joined_channels.size()); i++) {
+		if (send_message_chat(joined_channels[i], message))
+			return (1);
 	}
 	return (0);
 }
@@ -273,30 +282,26 @@ int Executer::handle_ping(int userSocketFD, const std::string &message) {
 
 int	Executer::kick_user(int userSocketFD, std::string targetUserName, std::string channelName) {
 	std::unordered_map<std::string, Chat> channels = this->_database.get_all_channel();
+	std::unordered_map<std::string, Chat>::iterator channel = channels.find(channelName);
+	int targetFD = this->_database.get_user_fd(targetUserName);
 
-	if (channels.find(channelName) == channels.end()) {
+	if (channel == channels.end()) {
 		send_user_message(userSocketFD, std::string("Channel does not exist\r\n"));
 		return (1);
 	}
-	Chat channel = channels.find(channelName)->second;
 
-	//if (channel._operators.find(userSocketFD) == channel._operators.end()) {
-	//	send_user_message(userSocketFD, std::string("You are not an operator\r\n"));
-	//	return (1);
-	//}
-
-	this->_database.remove_user_channel(this->_database.get_user_fd(targetUserName), channelName);
-
-
-
-	int targetFD = this->_database.get_user_fd(targetUserName);
-	User targetUser = this->_database.get_user(targetFD);
-
-	if (targetFD == -1 || targetUser.get_socket_fd() == -1) {
-		send_user_message(userSocketFD, std::string("User is not in the same channel\r\n"));
+	if (channel->second.get_operators().find(userSocketFD) == channel->second.get_operators().end()) { // checks if the person kicking is operator and if not so, they cant kick them because either they are not in the same channel or not an operator
+		send_user_message(userSocketFD, std::string("Permission Denied\r\n"));
 		return (1);
 	}
+
+	if (channel->second.get_users().find(targetFD) == channel->second.get_users().end()) {
+		send_user_message(userSocketFD, std::string("User is not in this channel\r\n"));
+		return (1);
+	}
+
 	send_user_message(targetFD, std::string("You have been kicked from the channel\r\n"));
-	remove_user_channel(targetFD, targetUser.get_user_name());
+	remove_user_channel(targetFD, targetUserName);
+	send_user_message(userSocketFD, std::string("User has been kicked from the channel\r\n"));
 	return (0);
 }

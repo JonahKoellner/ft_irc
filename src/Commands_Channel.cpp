@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands_Channel.cpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 22:15:49 by mreidenb          #+#    #+#             */
-/*   Updated: 2024/01/01 22:51:59 by mreidenb         ###   ########.fr       */
+/*   Updated: 2024/01/03 12:14:29 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,10 @@ int	Commander::handle_mode() {
 	if (this->_commandArguments[0][0] != '#')
 		return (ex.send_user_message(this->_userSocket_FD, std::string("Invalid channel name\r\n")));
 	std::string name = ex.get_user(this->_userSocket_FD).get_user_name();
-	std::string chan = ex.get_user(this->_userSocket_FD).get_channel();
+	//std::string chan = ex.get_user(this->_userSocket_FD).get_channel();
 	std::string message = name + " has changed the mode of " + this->_commandArguments[0] + "\r\n";
-	ex.send_message_chat(chan, message);
+	//ex.send_message_chat(chan, message);
+	ex.send_message_all_chat(this->_userSocket_FD, message);
 	return (0);
 }
 

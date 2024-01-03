@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 16:13:03 by jonahkollne       #+#    #+#             */
-/*   Updated: 2024/01/02 17:12:13 by jkollner         ###   ########.fr       */
+/*   Updated: 2024/01/03 11:38:39 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "Chat.hpp"
 #include "Database.hpp"
 
- 
+
 class Executer{
 	static const std::string SERVER_NAME;
 	private:
@@ -32,6 +32,7 @@ class Executer{
 		int	send_message_user_chat(int userSocketFD, std::string message, std::string channelName);
 		int	send_message_to_user(std::string userName, std::string message);
 		int send_server_message(int userSocketFD, std::string message, std::string code);
+		int send_message_all_chat(int userSocketFD, std::string message);
 		int	set_userName(int userSocket_FD, std::string userName);
 		int set_user_User(int userSocket_FD, std::string userName, std::string nickName, std::string realName);
 		int	set_user_verified(int userSocketFD, bool verified);

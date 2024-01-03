@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 15:50:02 by jonahkollne       #+#    #+#             */
-/*   Updated: 2024/01/02 17:58:59 by jkollner         ###   ########.fr       */
+/*   Updated: 2024/01/03 10:28:06 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ class Chat {
 		void				set_name(std::string name);
 		int					add_user(User user);
 		int					remove_user(int	userSocket);
-		std::unordered_map<int, int>	get_users();
 
 	public:
 		Chat();
@@ -44,6 +43,7 @@ class Chat {
 		void		set_operator(int socketFD);
 		std::unordered_map<int, int>	get_operators();
 		void		remove_operator(int socketFD);
+		std::unordered_map<int, int>	get_users();
 		//std::vector<User>	get_users();
 
 		friend class Database;

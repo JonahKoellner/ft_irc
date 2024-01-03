@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Chat.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mreidenb <mreidenb@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:22:10 by jonahkollne       #+#    #+#             */
-/*   Updated: 2024/01/01 22:30:29 by mreidenb         ###   ########.fr       */
+/*   Updated: 2024/01/03 10:44:32 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,17 @@ void Chat::set_operator(int socketFD) {
 	this->_operators.insert(std::make_pair(socketFD, this->_operators.size()));
 }
 
+std::unordered_map<int, int> Chat::get_operators() {
+	return (this->_operators);
+}
+
 void Chat::remove_operator(int socketFD) {
 	this->_operators.erase(socketFD);
 }
 
 //std::vector<User> Chat::get_users() {
 //	return (this->_users);
-//}                                          
+//}
 
 int Chat::add_user(User user) {
 	int userSocket = user.get_socket_fd();
