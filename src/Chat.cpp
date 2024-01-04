@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:22:10 by jonahkollne       #+#    #+#             */
-/*   Updated: 2024/01/03 10:44:32 by jkollner         ###   ########.fr       */
+/*   Updated: 2024/01/04 16:26:08 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,22 @@ std::unordered_map<int, int> Chat::get_users() {
 
 int	Chat::remove_user(int userSocket) {
 	return (this->_users.erase(userSocket) > 0 ? 1 : 0);
+}
+
+void Chat::set_mode(ChatModes mode) {
+	this->_modes |= mode;
+}
+
+void Chat::unset_mode(ChatModes mode) {
+	this->_modes &= ~mode;
+}
+
+bool Chat::has_mode(ChatModes mode) {
+	return (this->_modes & mode);
+}
+
+std::bitset<8> Chat::get_modes() {
+	return (std::bitset<8>(this->_modes));
 }
 
 int Chat::size() {
