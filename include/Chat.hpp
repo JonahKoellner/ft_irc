@@ -6,7 +6,7 @@
 /*   By: jkollner <jkollner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 15:50:02 by jonahkollne       #+#    #+#             */
-/*   Updated: 2024/01/04 16:24:54 by jkollner         ###   ########.fr       */
+/*   Updated: 2024/01/04 16:28:37 by jkollner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@
 #include "Bot.hpp"
 
 enum ChatModes {
-	none = 0,
-	i = 1 << 0,
-	t = 1 << 1,
-	k = 1 << 2,
-	o = 1 << 3,
-	l = 1 << 4,
+	none = 0, // No modes
+	i = 1 << 0, // Set/remove invite-only channel
+	t = 1 << 1, // Set/remove the restrictions of the TOPIC comadn to channel operators
+	k = 1 << 2, // Set/remove the channel key (password)
+	o = 1 << 3, // Give/take channel operator privileges
+	l = 1 << 4, // Set/remove the user limit to channel
 };
 
 class Chat {
